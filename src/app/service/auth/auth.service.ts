@@ -6,15 +6,15 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthServiceService {
-  private serverUrl: string = 'https://localhost:8080/api/auth';
+export class AuthService {
+  private authUri: string = 'https://localhost:8080/api/auth';
 
   constructor(private httpClient: HttpClient) {}
 
   public authenticate(authRequest: AuthRequest): Observable<AuthResponse> {
     let authResponse: Observable<AuthResponse> =
       this.httpClient.post<AuthResponse>(
-        this.serverUrl + '/authenticate',
+        this.authUri + '/authenticate',
         authRequest
       );
 
@@ -24,7 +24,7 @@ export class AuthServiceService {
   public register(authRequest: AuthRequest): Observable<AuthResponse> {
     let authResponse: Observable<AuthResponse> =
       this.httpClient.post<AuthResponse>(
-        this.serverUrl + '/register',
+        this.authUri + '/register',
         authRequest
       );
 
