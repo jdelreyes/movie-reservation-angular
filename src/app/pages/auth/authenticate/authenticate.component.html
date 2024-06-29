@@ -1,3 +1,23 @@
 <div>
-  <form action=""></form>
+  <fieldset class="max-w-[400px] m-auto p-5 rounded-lg">
+    <legend class="text-3xl font-semibold">{{ title }}</legend>
+    <form action="POST" [formGroup]="authRequest" (submit)="authenticate()">
+      <p-inputGroup class="w-full">
+        <p-inputGroupAddon> <i class="pi pi-user"></i> </p-inputGroupAddon>
+        <input pInputText placeholder="Username" formControlName="username" />
+      </p-inputGroup>
+      <p-inputGroup class="w-full">
+        <p-inputGroupAddon> <i class="pi pi-key"></i> </p-inputGroupAddon>
+        <p-password
+          [style]="{ width: '100%' }"
+          [feedback]="false"
+          placeholder="Password"
+          formControlName="password"
+        />
+      </p-inputGroup>
+      <div class="mt-5 flex justify-end w-full">
+        <p-button label="submit" type="submit"></p-button>
+      </div>
+    </form>
+  </fieldset>
 </div>
