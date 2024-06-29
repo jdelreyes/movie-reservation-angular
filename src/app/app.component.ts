@@ -6,10 +6,7 @@ import { ButtonModule } from 'primeng/button';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, ButtonModule],
+  imports: [RouterOutlet, CommonModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
 })
-export class AppComponent {
-  title = 'Movie Reservation Angular';
-}
+export class AppComponent {}

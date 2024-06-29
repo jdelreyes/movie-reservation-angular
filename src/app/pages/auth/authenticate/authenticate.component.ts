@@ -21,7 +21,6 @@ import { InputTextModule } from 'primeng/inputtext';
     InputTextModule,
   ],
   templateUrl: './authenticate.component.html',
-  styleUrl: './authenticate.component.css',
 })
 export class AuthenticateComponent {
   public title: string = 'Authenticate';

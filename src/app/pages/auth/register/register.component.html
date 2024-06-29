@@ -1,1 +1,37 @@
-<p>register works!</p>
+<div>
+  <fieldset class="max-w-[400px] m-auto p-5 rounded-lg">
+    <legend class="text-3xl font-semibold m-2">{{ title }}</legend>
+    <form action="POST" [formGroup]="authRequest" (submit)="register()">
+      <p-inputGroup class="w-full my-1">
+        <p-inputGroupAddon> <i class="pi pi-user"></i> </p-inputGroupAddon>
+        <input pInputText placeholder="Username" formControlName="username" />
+      </p-inputGroup>
+      <p-inputGroup class="w-full my-1">
+        <p-inputGroupAddon> <i class="pi pi-key"></i> </p-inputGroupAddon>
+        <p-password
+          [style]="{ width: '100%' }"
+          placeholder="Password"
+          formControlName="password"
+        />
+      </p-inputGroup>
+      <p-inputGroup class="w-full my-1">
+        <p-inputGroupAddon> <i class="pi pi-key"></i> </p-inputGroupAddon>
+        <p-password
+          [feedback]="false"
+          [style]="{ width: '100%' }"
+          placeholder="Confirm Password"
+          formControlName="confirmPassword"
+        />
+      </p-inputGroup>
+      <div>
+        <p>Already have account? <a href="login">Login here</a>.</p>
+      </div>
+      <div class="mt-5 flex justify-end w-full">
+        <p-button
+          label="Submit"
+          type="submit"
+        ></p-button>
+      </div>
+    </form>
+  </fieldset>
+</div>
