@@ -1,12 +1,16 @@
-import { Component } from '@angular/core';
-import { AuthService } from '../../../service/auth/auth.service';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { ButtonModule } from 'primeng/button';
-import { InputGroupModule } from 'primeng/inputgroup';
-import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { PasswordModule } from 'primeng/password';
-import { InputTextModule } from 'primeng/inputtext';
+import {Component} from '@angular/core';
+import {FormControl, FormGroup, ReactiveFormsModule, Validators,} from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {ButtonModule} from 'primeng/button';
+import {InputGroupModule} from 'primeng/inputgroup';
+import {InputGroupAddonModule} from 'primeng/inputgroupaddon';
+import {PasswordModule} from 'primeng/password';
+import {InputTextModule} from 'primeng/inputtext';
+
+import {FieldsetModule} from 'primeng/fieldset';
+import {AuthService} from '../../../service/auth/auth.service';
+import {AuthResponse} from '../../../dto';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -19,30 +23,46 @@ import { InputTextModule } from 'primeng/inputtext';
     InputGroupAddonModule,
     PasswordModule,
     InputTextModule,
+    FieldsetModule,
   ],
   templateUrl: './register.component.html',
 })
 export class RegisterComponent {
   public title: string = 'Register';
+  public authResponse!: AuthResponse;
 
-  public authRequest = new FormGroup({
-    username: new FormControl(''),
-    password: new FormControl(''),
-    confirmPassword: new FormControl(''),
+  public formGroup = new FormGroup({
+    username: new FormControl('', [
+      Validators.required,
+      Validators.minLength(1)
+    ]),
+    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+    confirmPassword: new FormControl('', [Validators.required, Validators.minLength(8)]),
   });
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {
+  }
 
   public passwordMatches(): boolean {
     return (
-      this.authRequest.value.password === this.authRequest.value.confirmPassword
+      this.formGroup.value.password === this.formGroup.value.confirmPassword
     );
   }
 
-  public register() {
-    this.authService.register({
-      username: this.authRequest.value.username!,
-      password: this.authRequest.value.password!,
-    });
+  public register(): void {
+    if (!this.passwordMatches()) return;
+
+    this.authService
+      .register({
+        username: this.formGroup.value.username!,
+        password: this.formGroup.value.password!,
+      })
+      .subscribe((response: AuthResponse): void => {
+        this.authResponse = response;
+      });
+
+    this.router.navigateByUrl('/');
+
+    localStorage.setItem('token', this.authResponse.token);
   }
 }

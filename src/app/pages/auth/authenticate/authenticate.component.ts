@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
-import { AuthService } from '../../../service/auth/auth.service';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { ButtonModule } from 'primeng/button';
-import { InputGroupModule } from 'primeng/inputgroup';
-import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { PasswordModule } from 'primeng/password';
-import { InputTextModule } from 'primeng/inputtext';
+import {Component} from '@angular/core';
+import {AuthService} from '../../../service/auth/auth.service';
+import {FormControl, FormGroup, ReactiveFormsModule, Validators,} from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {ButtonModule} from 'primeng/button';
+import {InputGroupModule} from 'primeng/inputgroup';
+import {InputGroupAddonModule} from 'primeng/inputgroupaddon';
+import {PasswordModule} from 'primeng/password';
+import {InputTextModule} from 'primeng/inputtext';
+import {AuthResponse} from '../../../dto';
+import {Router} from '@angular/router';
+import {FieldsetModule} from 'primeng/fieldset';
 
 @Component({
   selector: 'app-authenticate',
@@ -19,23 +22,40 @@ import { InputTextModule } from 'primeng/inputtext';
     InputGroupAddonModule,
     PasswordModule,
     InputTextModule,
+    FieldsetModule,
   ],
   templateUrl: './authenticate.component.html',
 })
 export class AuthenticateComponent {
   public title: string = 'Authenticate';
+  public authResponse!: AuthResponse;
 
-  public authRequest = new FormGroup({
-    username: new FormControl(''),
-    password: new FormControl(''),
+  public formGroup = new FormGroup({
+    username: new FormControl('', [
+      Validators.required,
+      Validators.minLength(1),
+    ]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(8),
+    ]),
   });
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {
+  }
 
-  public authenticate() {
-    this.authService.authenticate({
-      username: this.authRequest.value.username!,
-      password: this.authRequest.value.password!,
-    });
+  public authenticate(): void {
+    this.authService
+      .authenticate({
+        username: this.formGroup.value.username!,
+        password: this.formGroup.value.password!,
+      })
+      .subscribe((response: AuthResponse) => {
+        this.authResponse = response;
+      });
+
+    localStorage.setItem('token', this.authResponse.token);
+
+    this.router.navigateByUrl('/');
   }
 }
