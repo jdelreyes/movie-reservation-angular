@@ -1,16 +1,21 @@
-import {Component} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators,} from '@angular/forms';
-import {CommonModule} from '@angular/common';
-import {ButtonModule} from 'primeng/button';
-import {InputGroupModule} from 'primeng/inputgroup';
-import {InputGroupAddonModule} from 'primeng/inputgroupaddon';
-import {PasswordModule} from 'primeng/password';
-import {InputTextModule} from 'primeng/inputtext';
+import { Component } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { PasswordModule } from 'primeng/password';
+import { InputTextModule } from 'primeng/inputtext';
 
-import {FieldsetModule} from 'primeng/fieldset';
-import {AuthService} from '../../../service/auth/auth.service';
-import {AuthResponse} from '../../../dto';
-import {Router} from '@angular/router';
+import { FieldsetModule } from 'primeng/fieldset';
+import { AuthService } from '../../../service/auth/auth.service';
+import { AuthResponse } from '../../../dto';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -24,6 +29,7 @@ import {Router} from '@angular/router';
     PasswordModule,
     InputTextModule,
     FieldsetModule,
+    RouterLink,
   ],
   templateUrl: './register.component.html',
 })
@@ -34,14 +40,19 @@ export class RegisterComponent {
   public formGroup = new FormGroup({
     username: new FormControl('', [
       Validators.required,
-      Validators.minLength(1)
+      Validators.minLength(1),
     ]),
-    password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-    confirmPassword: new FormControl('', [Validators.required, Validators.minLength(8)]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(8),
+    ]),
+    confirmPassword: new FormControl('', [
+      Validators.required,
+      Validators.minLength(8),
+    ]),
   });
 
-  constructor(private authService: AuthService, private router: Router) {
-  }
+  constructor(private authService: AuthService, private router: Router) {}
 
   public passwordMatches(): boolean {
     return (

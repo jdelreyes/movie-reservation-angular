@@ -1,10 +1,10 @@
 <section>
   <div class="max-w-[500px] m-auto p-5 rounded-lg">
-    <p-fieldset legend="{{title}}">
+    <p-fieldset legend="{{ title }}">
       <form action="post" [formGroup]="formGroup" (submit)="register()">
         <p-inputGroup class="w-full my-1">
           <p-inputGroupAddon><i class="pi pi-user"></i></p-inputGroupAddon>
-          <input pInputText placeholder="Username" formControlName="username"/>
+          <input pInputText placeholder="Username" formControlName="username" />
         </p-inputGroup>
         <p-inputGroup class="w-full my-1">
           <p-inputGroupAddon><i class="pi pi-key"></i></p-inputGroupAddon>
@@ -24,7 +24,7 @@
           />
         </p-inputGroup>
         <div>
-          <p>Already have account? <a href="/login">Login here</a>.</p>
+          <p>Already have account? <a routerLink="/login">Login here</a>.</p>
         </div>
         <div class="mt-5 flex justify-end w-full">
           <p-button label="Submit" type="submit"></p-button>

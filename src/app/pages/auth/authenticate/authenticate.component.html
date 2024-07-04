@@ -1,10 +1,10 @@
 <section>
   <div class="max-w-[500px] m-auto p-5 rounded-lg">
-    <p-fieldset legend="{{title}}">
+    <p-fieldset legend="{{ title }}">
       <form action="post" [formGroup]="formGroup" (submit)="authenticate()">
         <p-inputGroup class="w-full my-1">
           <p-inputGroupAddon><i class="pi pi-user"></i></p-inputGroupAddon>
-          <input pInputText placeholder="Username" formControlName="username"/>
+          <input pInputText placeholder="Username" formControlName="username" />
         </p-inputGroup>
         <p-inputGroup class="w-full my-1">
           <p-inputGroupAddon><i class="pi pi-key"></i></p-inputGroupAddon>
@@ -16,20 +16,16 @@
           />
         </p-inputGroup>
         @if (this.formGroup.invalid) {
-          <div class="alert alert-danger">
-            @if (this.formGroup.hasError('required')) {
-              <div>
-                Name is required.
-              </div>
-            } @else if (this.formGroup.hasError('minLength')) {
-              <div>
-                Name must be at least 4 characters long.
-              </div>
-            }
-          </div>
+        <div class="alert alert-danger">
+          @if (this.formGroup.hasError('required')) {
+          <div>Name is required.</div>
+          } @else if (this.formGroup.hasError('minLength')) {
+          <div>Name must be at least 4 characters long.</div>
+          }
+        </div>
         }
         <div>
-          <p>No account? <a href="/register">Register here</a>.</p>
+          <p>No account? <a routerLink="/register">Register here</a>.</p>
         </div>
         <div class="mt-5 flex justify-end w-full">
           <p-button label="Submit" type="submit"></p-button>

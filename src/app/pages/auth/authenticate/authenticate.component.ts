@@ -1,15 +1,20 @@
-import {Component} from '@angular/core';
-import {AuthService} from '../../../service/auth/auth.service';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators,} from '@angular/forms';
-import {CommonModule} from '@angular/common';
-import {ButtonModule} from 'primeng/button';
-import {InputGroupModule} from 'primeng/inputgroup';
-import {InputGroupAddonModule} from 'primeng/inputgroupaddon';
-import {PasswordModule} from 'primeng/password';
-import {InputTextModule} from 'primeng/inputtext';
-import {AuthResponse} from '../../../dto';
-import {Router} from '@angular/router';
-import {FieldsetModule} from 'primeng/fieldset';
+import { Component } from '@angular/core';
+import { AuthService } from '../../../service/auth/auth.service';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { PasswordModule } from 'primeng/password';
+import { InputTextModule } from 'primeng/inputtext';
+import { AuthResponse } from '../../../dto';
+import { Router, RouterLink } from '@angular/router';
+import { FieldsetModule } from 'primeng/fieldset';
 
 @Component({
   selector: 'app-authenticate',
@@ -23,6 +28,7 @@ import {FieldsetModule} from 'primeng/fieldset';
     PasswordModule,
     InputTextModule,
     FieldsetModule,
+    RouterLink,
   ],
   templateUrl: './authenticate.component.html',
 })
@@ -41,8 +47,7 @@ export class AuthenticateComponent {
     ]),
   });
 
-  constructor(private authService: AuthService, private router: Router) {
-  }
+  constructor(private authService: AuthService, private router: Router) {}
 
   public authenticate(): void {
     this.authService

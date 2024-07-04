@@ -1,13 +1,23 @@
-<nav class="flex justify-between items-center bg-gray-300 sticky top-0 px-3">
-  <header>
-    <h2><a class="no-underline text-black" href="/">{{ title }}</a></h2>
-  </header>
-  <ul class="flex flex-row list-none">
-    @if (isLoggedIn()) {
-      <li><a href="/profile" class="px-3 no-underline">Profile</a></li>
-    } @else {
-      <li><a href="/login" class="px-3 no-underline">Login</a></li>
-      <li><a href="/register" class="px-3 no-underline">Register</a></li>
-    }
-  </ul>
+<nav class="bg-gray-300 sticky top-0 px-3">
+  <div class="flex justify-between items-center m-auto max-w-[1300px]">
+    <header>
+      <h2>
+        <a class="no-underline text-black" href="/">{{ title }}</a>
+      </h2>
+    </header>
+    <ul class="flex flex-row list-none items-center">
+      @if (isLoggedIn()) {
+      <li>
+        <a routerLink="/profile"><p-button label="Profile" [link]="true" /></a>
+      </li>
+      } @else {
+      <li>
+        <a routerLink="/login"><p-button label="Sign In" [link]="true" /></a>
+      </li>
+      <li>
+        <a routerLink="/register"><p-button label="Register" /></a>
+      </li>
+      }
+    </ul>
+  </div>
 </nav>
