@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
 })
 export class VisitorService {
   private movieUri: string = 'http://localhost:8080/api/movies';
+  // note: not yet implemented in the server
   private movieScheduleUri: string = 'http://localhost:8080/movie-schedules';
 
   constructor(private httpClient: HttpClient) {}

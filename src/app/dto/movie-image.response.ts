@@ -3,5 +3,5 @@ export interface MovieImageResponse {
   name: string;
   type: string;
   createdAt: Date;
-  data: number[];
+  data: Int8Array;
 }
