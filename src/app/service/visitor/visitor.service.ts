@@ -12,12 +12,11 @@ import { Observable } from 'rxjs';
 })
 export class VisitorService {
   private movieUri: string = 'http://localhost:8080/api/movies';
-  // note: not yet implemented in the server
   private movieScheduleUri: string = 'http://localhost:8080/movie-schedules';
 
   constructor(private httpClient: HttpClient) {}
 
-  public getMovies(): Observable<MovieResponse[]> {
+  public getAvailableMovies(): Observable<MovieResponse[]> {
     return this.httpClient.get<MovieResponse[]>(this.movieUri);
   }
 
@@ -29,5 +28,11 @@ export class VisitorService {
 
   public getMovieSchedules(): Observable<MovieScheduleResponse[]> {
     return this.httpClient.get<MovieScheduleResponse[]>(this.movieScheduleUri);
+  }
+
+  public getMovieSchedule(id: number): Observable<MovieScheduleResponse> {
+    return this.httpClient.get<MovieScheduleResponse>(
+      this.movieScheduleUri + '/' + id
+    );
   }
 }

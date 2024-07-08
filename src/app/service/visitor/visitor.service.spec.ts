@@ -18,7 +18,7 @@ describe('VisitorService', () => {
   it('should retrieve movies', () => {
     let movieList;
 
-    service.getMovies().subscribe((m: MovieResponse[]): void => {
+    service.getAvailableMovies().subscribe((m: MovieResponse[]): void => {
       movieList=m;
     })
 
