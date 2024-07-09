@@ -2,21 +2,23 @@
   <div class="m-auto max-w-[1300px] px-3">
     <h1 class="text-2xl font-semibold">{{ title }}</h1>
     <!-- todo design using flex or grid -->
-    <div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       @for (movie of movieList; track movie.id) {
-      <div>{{ movie.title }}</div>
-      <div>{{ movie.description }}</div>
-      <div>{{ movie.director }}</div>
-      <div>{{ movie.genre }}</div>
-      <img
-        [src]="
-          'data:' + movie.movieImage.type + ';base64,' + movie.movieImage.data
-        "
-        alt="{{ movie.title }} Image"
-        width="200"
-        height="200"
-      />
-      <hr />
+      <div class="w-[320px]">
+        <a href=""
+          ><img
+            [src]="
+              'data:' +
+              movie.movieImage.type +
+              ';base64,' +
+              movie.movieImage.data
+            "
+            alt="{{ movie.title }} Image"
+            width="310"
+            height="475"
+        /></a>
+        <h2 class="text-xl">{{ movie.title }}</h2>
+      </div>
       }
       <!-- todo end -->
     </div>
