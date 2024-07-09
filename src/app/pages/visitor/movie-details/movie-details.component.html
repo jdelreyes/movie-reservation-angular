@@ -1,0 +1,16 @@
+<section>
+  <div>
+    @if (movie && movie.movieImage) {
+    <img
+      src="data:{{ movie.movieImage.type }};base64,{{ movie.movieImage.data }}"
+      alt="{{ movie.title }}"
+    />
+    } @else {
+    <img src="/assets/img/placeholder.png" alt="{{ movie?.title }}" />
+    }
+    <p>{{ movie?.title }}</p>
+    <p>{{ movie?.description }}</p>
+    <p>{{ movie?.director }}</p>
+    <p>{{ movie?.genre }}</p>
+  </div>
+</section>

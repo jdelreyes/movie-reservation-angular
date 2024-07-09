@@ -4,15 +4,25 @@ import { MovieResponse } from '../../../dto';
 import { Base64Pipe } from '../../../pipe/base64.pipe';
 import { LowerCasePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { ImageModule } from 'primeng/image';
+import { CardModule } from 'primeng/card';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [Base64Pipe, LowerCasePipe, RouterLink],
+  imports: [
+    Base64Pipe,
+    LowerCasePipe,
+    RouterLink,
+    CardModule,
+    ImageModule,
+    SkeletonModule,
+  ],
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
-  public title: string = 'Available Movies';
+  public title: string = 'Movies';
   public movieList: MovieResponse[] = [];
 
   constructor(private visitorService: VisitorService) {}

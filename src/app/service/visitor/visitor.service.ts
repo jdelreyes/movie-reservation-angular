@@ -16,6 +16,10 @@ export class VisitorService {
 
   constructor(private httpClient: HttpClient) {}
 
+  public getMovie(id: number): Observable<MovieResponse> {
+    return this.httpClient.get<MovieResponse>(this.movieUri + '/' + id);
+  }
+
   public getAvailableMovies(): Observable<MovieResponse[]> {
     return this.httpClient.get<MovieResponse[]>(this.movieUri);
   }
