@@ -20,8 +20,13 @@ export class VisitorService {
     return this.httpClient.get<MovieResponse>(this.movieUri + '/' + id);
   }
 
-  public getAvailableMovies(): Observable<MovieResponse[]> {
-    return this.httpClient.get<MovieResponse[]>(this.movieUri);
+  public getAvailableMovies(
+    page: number,
+    size: number
+  ): Observable<MovieResponse[]> {
+    return this.httpClient.get<MovieResponse[]>(
+      `${this.movieUri}?page=${page}&size=${size}`
+    );
   }
 
   public getMovieImage(id: number): Observable<MovieImageResponse> {

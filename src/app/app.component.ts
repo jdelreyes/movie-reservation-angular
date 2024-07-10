@@ -1,8 +1,8 @@
 import {CommonModule} from '@angular/common';
 import {Component} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
-import {FooterComponent} from "./pages/shared/footer/footer.component";
-import {HeaderComponent} from "./pages/shared/header/header.component";
+import {FooterComponent} from "./page/shared/footer/footer.component";
+import {HeaderComponent} from "./page/shared/header/header.component";
 
 @Component({
   selector: 'app-root',
