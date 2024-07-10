@@ -1,16 +1,36 @@
 <section>
-  <div>
+  <div class="max-w-[750px] m-auto flex flex-row">
     @if (movie && movie.movieImage) {
-    <img
+    <p-image
       src="data:{{ movie.movieImage.type }};base64,{{ movie.movieImage.data }}"
       alt="{{ movie.title }}"
+      width="400"
+      class="p-3"
     />
     } @else {
-    <img src="/assets/img/placeholder.png" alt="{{ movie?.title }}" />
+    <p-image
+      src="/assets/img/placeholder.png"
+      alt="{{ movie?.title }}"
+      width="400"
+      class="p-3"
+    />
     }
-    <p>{{ movie?.title }}</p>
-    <p>{{ movie?.description }}</p>
-    <p>{{ movie?.director }}</p>
-    <p>{{ movie?.genre }}</p>
+    <div class="flex flex-col p-3 justify-between">
+      <div>
+        <h2 class="text-3xl font-bold">{{ movie?.title }}</h2>
+        <p class="text-2xl opacity-80">{{ movie?.description }}</p>
+        @for (genre of movie?.genres; track $index){
+        <p-tag
+          styleClass="text-lg m-1"
+          severity="info"
+          [rounded]="true"
+          value="{{ genre | space | titlecase }}"
+        />
+        }
+      </div>
+      <div class="p-2 self-end">
+        <p-button styleClass="text-xl" label="View Movie Schedules" />
+      </div>
+    </div>
   </div>
 </section>

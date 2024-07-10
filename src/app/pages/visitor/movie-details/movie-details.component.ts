@@ -2,11 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MovieResponse } from '../../../dto';
 import { VisitorService } from '../../../service/visitor/visitor.service';
+import { ImageModule } from 'primeng/image';
+import { TitleCasePipe } from '@angular/common';
+import { TagModule } from 'primeng/tag';
+import { ButtonModule } from 'primeng/button';
+import { SpacePipe } from '../../../pipe/space.pipe';
 
 @Component({
   selector: 'app-movie-details',
   standalone: true,
-  imports: [],
+  imports: [ImageModule, TitleCasePipe, TagModule, ButtonModule, SpacePipe],
   templateUrl: './movie-details.component.html',
 })
 export class MovieDetailsComponent implements OnInit {

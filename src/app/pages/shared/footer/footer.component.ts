@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
+import { DividerModule } from 'primeng/divider';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [RouterLink],
+  imports: [DividerModule],
   templateUrl: './footer.component.html',
 })
 export class FooterComponent {
