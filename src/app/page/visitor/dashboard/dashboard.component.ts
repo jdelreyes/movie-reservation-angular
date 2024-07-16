@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MovieScheduleResponse } from '../../../dto';
+import { MovieScheduleResponse } from '../../../interface/dto';
 import { VisitorService } from '../../../service/visitor/visitor.service';
 import { ActivatedRoute } from '@angular/router';
 

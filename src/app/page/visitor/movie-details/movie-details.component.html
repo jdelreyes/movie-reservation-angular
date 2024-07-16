@@ -1,24 +1,26 @@
-<section>
-  <div class="max-w-[750px] m-auto flex flex-row my-[100px]">
-    @if (movie && movie.movieImage) {
-    <p-image
-      src="data:{{ movie.movieImage.type }};base64,{{ movie.movieImage.data }}"
-      alt="{{ movie.title }}"
-      width="400"
-      class="p-3"
-    />
-    } @else {
-    <p-image
-      src="/assets/img/placeholder.png"
-      alt="{{ movie?.title }}"
-      width="400"
-      class="p-3"
-    />
-    }
-    <div class="flex flex-col p-3 justify-between">
+<section class="py-10">
+  <div class="max-w-[775px] m-auto flex flex-col md:flex-row justify-center">
+    <div class="basis-1/2 m-3 flex justify-center items-center">
+      @if (movie && movie.movieImage) {
+      <p-image
+        src="data:{{ movie.movieImage.type }};base64,{{
+          movie.movieImage.data
+        }}"
+        alt="{{ movie.title }}"
+        width="350px"
+      />
+      } @else {
+      <p-image
+        src="/assets/img/placeholder.png"
+        alt="{{ movie?.title }}"
+        width="350px"
+      />
+      }
+    </div>
+    <div class="flex flex-col basis-1/2 p-3 justify-between">
       <div>
         <h2 class="text-3xl font-bold">{{ movie?.title }}</h2>
-        <p class="text-2xl opacity-80">{{ movie?.description }}</p>
+        <p class="text-2xl text-gray-300">{{ movie?.description }}</p>
         @for (genre of movie?.genres; track $index){
         <p-tag
           styleClass="text-lg m-1"
@@ -28,7 +30,7 @@
         />
         }
       </div>
-      <div class="p-2 self-end">
+      <div class="p-2 mt-5 self-end">
         <p-button styleClass="text-xl" label="View Movie Schedules" />
       </div>
     </div>

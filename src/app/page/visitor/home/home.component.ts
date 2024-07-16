@@ -1,16 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { VisitorService } from '../../../service/visitor/visitor.service';
-import { MovieResponse } from '../../../dto';
+import { MovieResponse } from '../../../interface/dto';
 import { Base64Pipe } from '../../../pipe/base64.pipe';
 import { LowerCasePipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ImageModule } from 'primeng/image';
 import { CardModule } from 'primeng/card';
 import { SkeletonModule } from 'primeng/skeleton';
 import { PaginatorModule } from 'primeng/paginator';
-import { PageEvent } from '../../../event';
-import { finalize, Subject, takeUntil, tap } from 'rxjs';
-import { SourceTextModule } from 'node:vm';
+import { PageEvent } from '../../../interface/event';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -30,16 +29,26 @@ export class HomeComponent implements OnInit, OnDestroy {
   public title: string = 'Movies';
   public movieList: MovieResponse[] = [];
 
+  public totalRecords: number = 0;
+
   public first: number = 0;
   public page: number = 0;
-  public size: number = 3;
+  public size: number = 4;
 
   public isLoading: boolean = true;
   private unsubscribe$: Subject<unknown> = new Subject();
 
-  constructor(private visitorService: VisitorService) {}
+  public constructor(
+    private visitorService: VisitorService,
+    private router: Router,
+    private activateRoute: ActivatedRoute
+  ) {}
 
   public ngOnInit(): void {
+    this.activateRoute.queryParams.subscribe((params) => {
+      if (params['page']) this.page = params['page'];
+      if (params['size']) this.size = params['size'];
+    });
     this.getAvailableMovies();
   }
 
@@ -52,8 +61,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.page = event.page;
     this.size = event.rows;
 
-    console.log(this.page)
-    console.log(this.size)
+    this.router.navigate([''], {
+      queryParams: { page: this.page, size: this.size },
+    });
 
     this.getAvailableMovies();
     this.showUp();
@@ -67,11 +77,11 @@ export class HomeComponent implements OnInit, OnDestroy {
           next: (movies: MovieResponse[]) => {
             if (movies) {
               this.movieList = movies;
+              this.totalRecords = movies.length;
+
+              this.isLoading = false;
             }
           },
-        }),
-        finalize(() => {
-          this.isLoading = false;
         }),
         takeUntil(this.unsubscribe$)
       )

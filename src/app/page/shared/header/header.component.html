@@ -6,7 +6,21 @@
     <ul class="flex flex-row list-none items-center p-0">
       @if (isLoggedIn()) {
       <li>
-        <a routerLink="/profile"><p-button label="Profile" [link]="true" /></a>
+        <p-splitButton
+          label="{{ username }}"
+          (onClick)="navigateToProfile()"
+          [model]="items"
+        >
+          <ng-template pTemplate="content">
+            <span
+              class="flex align-items-center font-bold items-center justify-center"
+            >
+              <span class="pi pi-user"></span>
+              <span class="w-2"></span>
+              <span>{{ username }}</span>
+            </span>
+          </ng-template>
+        </p-splitButton>
       </li>
       } @else {
       <li>

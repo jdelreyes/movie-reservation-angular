@@ -1,7 +1,7 @@
 import {TestBed} from '@angular/core/testing';
 
 import {VisitorService} from './visitor.service';
-import {MovieResponse} from "../../dto";
+import {MovieResponse} from "../../interface/dto";
 
 describe('VisitorService', () => {
   let service: VisitorService;

@@ -2,16 +2,16 @@
   <div class="m-auto max-w-[1300px] px-3">
     <h1 class="text-2xl font-light">{{ title }}</h1>
     <div
-      class="grid justify-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+      class="grid justify-items-center grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
     >
-      @if (this.isLoading) { @for (item of [1,2]; track $index) {
+      @if (this.isLoading) { @for (item of [1,2,3,4]; track $index) {
       <div class="flex flex-col">
-        <p-skeleton width="330px" height="475px" />
+        <p-skeleton width="250px" height="350px" />
         <br />
-        <p-skeleton width="330px" height="80px" />
+        <p-skeleton styleClass="mt-10" width="250px" height="80px" />
       </div>
       } } @else { @for (movie of movieList; track movie.id) {
-      <div class="py-5 w-[330px]">
+      <div class="py-5 w-[250px]">
         <p-card header="{{ movie.title }}" styleClass="bg-inherit shadow-none">
           <ng-template pTemplate="header">
             <a [routerLink]="'movie/' + movie.id + '/' + movie.title">
@@ -25,14 +25,13 @@
                 "
                 class="hover:border-4 rounded-xl border-zinc-900"
                 alt="{{ movie.title }} Image"
-                height="475"
+                height="350"
               />} @else {
               <img
                 src="/assets/img/placeholder.png"
                 alt="{{ movie.title }} Image"
                 class="hover:border-4 rounded-xl border-zinc-900"
-                width="310"
-                height="475"
+                height="350"
               />}
             </a>
           </ng-template>
@@ -40,13 +39,14 @@
       </div>
       } }
     </div>
+    @if (!this.isLoading) {
     <p-paginator
-      styleClass="bg-inherit"
+      styleClass="m-5"
       (onPageChange)="onPageChange($any($event))"
       [first]="this.first"
       [rows]="this.size"
       [totalRecords]="6"
-      [rowsPerPageOptions]="[2, 3, 4, 5, 6]"
-    />
+      [rowsPerPageOptions]="[3, 4, 6]"
+    />}
   </div>
 </section>

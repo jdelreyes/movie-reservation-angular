@@ -14,8 +14,9 @@ import { InputTextModule } from 'primeng/inputtext';
 
 import { FieldsetModule } from 'primeng/fieldset';
 import { AuthService } from '../../../service/auth/auth.service';
-import { AuthResponse } from '../../../dto';
+import { AuthResponse } from '../../../interface/dto';
 import { Router, RouterLink } from '@angular/router';
+import { HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -68,12 +69,10 @@ export class RegisterComponent {
         username: this.formGroup.value.username!,
         password: this.formGroup.value.password!,
       })
-      .subscribe((response: AuthResponse): void => {
-        this.authResponse = response;
+      .subscribe({
+        next: (v) => {
+          this.router.navigateByUrl('/login');
+        },
       });
-
-    this.router.navigateByUrl('/');
-
-    localStorage.setItem('token', this.authResponse.token);
   }
 }

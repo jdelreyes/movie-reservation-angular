@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MovieResponse } from '../../../dto';
+import { MovieResponse } from '../../../interface/dto';
 import { VisitorService } from '../../../service/visitor/visitor.service';
 import { ImageModule } from 'primeng/image';
 import { TitleCasePipe } from '@angular/common';

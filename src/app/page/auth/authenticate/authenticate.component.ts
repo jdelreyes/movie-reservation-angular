@@ -12,7 +12,6 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
-import { AuthResponse } from '../../../dto';
 import { Router, RouterLink } from '@angular/router';
 import { FieldsetModule } from 'primeng/fieldset';
 
@@ -34,7 +33,6 @@ import { FieldsetModule } from 'primeng/fieldset';
 })
 export class AuthenticateComponent {
   public title: string = 'Authenticate';
-  public authResponse!: AuthResponse;
 
   public formGroup = new FormGroup({
     username: new FormControl('', [
@@ -55,12 +53,14 @@ export class AuthenticateComponent {
         username: this.formGroup.value.username!,
         password: this.formGroup.value.password!,
       })
-      .subscribe((response: AuthResponse) => {
-        this.authResponse = response;
+      .subscribe({
+        next: (v) => {
+          this.router.navigateByUrl('/');
+        },
+        error: (e) => {
+          console.error(e);
+        },
+        complete: () => {},
       });
-
-    localStorage.setItem('token', this.authResponse.token);
-
-    this.router.navigateByUrl('/');
   }
 }

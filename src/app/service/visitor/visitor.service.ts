@@ -4,7 +4,7 @@ import {
   MovieResponse,
   MovieScheduleResponse,
   MovieImageResponse,
-} from '../../dto';
+} from '../../interface/dto';
 import { Observable } from 'rxjs';
 
 @Injectable({
