@@ -1,10 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'space',
+  name: 'underscorespace',
   standalone: true,
 })
-export class SpacePipe implements PipeTransform {
+export class UnderscoreToSpacePipe implements PipeTransform {
   transform(value: string | undefined): string | undefined {
     return value?.replace(/_/g, ' ');
   }

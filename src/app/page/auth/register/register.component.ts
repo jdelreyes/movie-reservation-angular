@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -14,9 +14,7 @@ import { InputTextModule } from 'primeng/inputtext';
 
 import { FieldsetModule } from 'primeng/fieldset';
 import { AuthService } from '../../../service/auth/auth.service';
-import { AuthResponse } from '../../../interface/dto';
 import { Router, RouterLink } from '@angular/router';
-import { HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -34,26 +32,35 @@ import { HttpEventType } from '@angular/common/http';
   ],
   templateUrl: './register.component.html',
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   public title: string = 'Register';
-  public authResponse!: AuthResponse;
 
-  public formGroup = new FormGroup({
-    username: new FormControl('', [
-      Validators.required,
-      Validators.minLength(1),
-    ]),
-    password: new FormControl('', [
-      Validators.required,
-      Validators.minLength(8),
-    ]),
-    confirmPassword: new FormControl('', [
-      Validators.required,
-      Validators.minLength(8),
-    ]),
-  });
+  public formGroup!: FormGroup;
+  public isFormSubmitted: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  public serverErrorMessage!: string;
+
+  public constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  public ngOnInit(): void {
+    this.formGroup = new FormGroup({
+      username: new FormControl('', [
+        Validators.required,
+        Validators.minLength(1),
+      ]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(8),
+      ]),
+      confirmPassword: new FormControl('', [
+        Validators.required,
+        Validators.minLength(8),
+      ]),
+    });
+  }
 
   public passwordMatches(): boolean {
     return (
@@ -62,7 +69,9 @@ export class RegisterComponent {
   }
 
   public register(): void {
+    this.isFormSubmitted = true;
     if (!this.passwordMatches()) return;
+    if (this.formGroup.invalid) return;
 
     this.authService
       .register({
@@ -73,6 +82,23 @@ export class RegisterComponent {
         next: (v) => {
           this.router.navigateByUrl('/login');
         },
+        error: (e) => {
+          if (e.status === 403) {
+            this.serverErrorMessage = 'Username already exists';
+          }
+        },
       });
+  }
+
+  public get username() {
+    return this.formGroup.get('username');
+  }
+
+  public get password() {
+    return this.formGroup.get('password');
+  }
+
+  public get confirmPassword() {
+    return this.formGroup.get('confirmPassword');
   }
 }

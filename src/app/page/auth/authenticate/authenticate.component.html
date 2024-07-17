@@ -15,12 +15,21 @@
             formControlName="password"
           />
         </p-inputGroup>
-        @if (this.formGroup.invalid) {
-        <div class="alert alert-danger">
-          @if (this.formGroup.hasError('required')) {
-          <div>Name is required.</div>
-          } @else if (this.formGroup.hasError('minLength')) {
-          <div>Name must be at least 4 characters long.</div>
+        @if (this.isFormSubmitted) {
+        <div class="text-red-500 text-sm">
+          @if (username && username.invalid) { @if
+          (username.hasError('required')){
+          <div>Username is required.</div>
+          } } @if (password && password.invalid) { @if
+          (password.hasError('required')) {
+          <div>Password is required.</div>
+          } @if (password.hasError('minlength')) {
+          <div>Password must be at least 8 characters long.</div>
+          } } @if (serverErrorMessage) {
+          <div>
+            {{ serverErrorMessage }}.
+            <a routerLink="/register">Register here</a>.
+          </div>
           }
         </div>
         }

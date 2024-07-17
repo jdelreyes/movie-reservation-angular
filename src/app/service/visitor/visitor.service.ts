@@ -4,6 +4,7 @@ import {
   MovieResponse,
   MovieScheduleResponse,
   MovieImageResponse,
+  TheaterResponse,
 } from '../../interface/dto';
 import { Observable } from 'rxjs';
 
@@ -12,7 +13,9 @@ import { Observable } from 'rxjs';
 })
 export class VisitorService {
   private movieUri: string = 'http://localhost:8080/api/movies';
-  private movieScheduleUri: string = 'http://localhost:8080/movie-schedules';
+  private movieScheduleUri: string =
+    'http://localhost:8080/api/movie-schedules';
+  private theaterUri: string = 'http://localhost:8080/api/theaters';
 
   constructor(private httpClient: HttpClient) {}
 
@@ -29,6 +32,12 @@ export class VisitorService {
     );
   }
 
+  public getAvailableMoviesByTitleContaining(title: string) {
+    return this.httpClient.get<MovieResponse[]>(
+      `${this.movieScheduleUri}?title=${title}`
+    );
+  }
+
   public getMovieImage(id: number): Observable<MovieImageResponse> {
     return this.httpClient.get<MovieImageResponse>(
       this.movieUri + '/' + id + '/image'
@@ -42,6 +51,12 @@ export class VisitorService {
   public getMovieSchedule(id: number): Observable<MovieScheduleResponse> {
     return this.httpClient.get<MovieScheduleResponse>(
       this.movieScheduleUri + '/' + id
+    );
+  }
+
+  public getTheatersByNameContaining(name: string) {
+    return this.httpClient.get<TheaterResponse[]>(
+      `${this.theaterUri}?name=${name}`
     );
   }
 }

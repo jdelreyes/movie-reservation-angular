@@ -12,26 +12,28 @@
       } @else {
       <p-image
         src="/assets/img/placeholder.png"
-        alt="{{ movie?.title }}"
+        alt="{{ movie.title }}"
         width="350px"
       />
       }
     </div>
     <div class="flex flex-col basis-1/2 p-3 justify-between">
       <div>
-        <h2 class="text-3xl font-bold">{{ movie?.title }}</h2>
-        <p class="text-2xl text-gray-300">{{ movie?.description }}</p>
-        @for (genre of movie?.genres; track $index){
+        <h2 class="text-3xl font-bold">{{ movie.title }}</h2>
+        <p class="text-2xl text-gray-300">{{ movie.description }}</p>
+        @for (genre of movie.genres; track $index){
         <p-tag
-          styleClass="text-lg m-1"
+          styleClass="text-lg p-2 m-1"
           severity="info"
           [rounded]="true"
-          value="{{ genre | space | titlecase }}"
+          value="{{ genre | underscorespace | titlecase }}"
         />
         }
       </div>
       <div class="p-2 mt-5 self-end">
-        <p-button styleClass="text-xl" label="View Movie Schedules" />
+        <a routerLink="/dashboard"
+          ><p-button styleClass="text-xl" label="View Movie Schedules"
+        /></a>
       </div>
     </div>
   </div>

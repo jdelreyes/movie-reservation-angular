@@ -5,7 +5,7 @@
       class="grid justify-items-center grid-cols-1 md:grid-cols-3 lg:grid-cols-4"
     >
       @if (this.isLoading) { @for (item of [1,2,3,4]; track $index) {
-      <div class="flex flex-col">
+      <div class="flex flex-col my-10">
         <p-skeleton width="250px" height="350px" />
         <br />
         <p-skeleton styleClass="mt-10" width="250px" height="80px" />
@@ -14,7 +14,14 @@
       <div class="py-5 w-[250px]">
         <p-card header="{{ movie.title }}" styleClass="bg-inherit shadow-none">
           <ng-template pTemplate="header">
-            <a [routerLink]="'movie/' + movie.id + '/' + movie.title">
+            <a
+              [routerLink]="
+                'movie/' +
+                movie.id +
+                '/' +
+                (movie.title | spacedash | lowercase)
+              "
+            >
               @if (movie.movieImage){
               <p-image
                 [src]="

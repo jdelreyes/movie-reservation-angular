@@ -4,7 +4,12 @@
       <form action="post" [formGroup]="formGroup" (submit)="register()">
         <p-inputGroup class="w-full my-1">
           <p-inputGroupAddon><i class="pi pi-user"></i></p-inputGroupAddon>
-          <input pInputText placeholder="Username" formControlName="username" />
+          <input
+            pInputText
+            placeholder="Username"
+            formControlName="username"
+            required
+          />
         </p-inputGroup>
         <p-inputGroup class="w-full my-1">
           <p-inputGroupAddon><i class="pi pi-key"></i></p-inputGroupAddon>
@@ -12,6 +17,7 @@
             [style]="{ width: '100%' }"
             placeholder="Password"
             formControlName="password"
+            required
           />
         </p-inputGroup>
         <p-inputGroup class="w-full my-1">
@@ -21,11 +27,34 @@
             [style]="{ width: '100%' }"
             placeholder="Confirm Password"
             formControlName="confirmPassword"
+            required
           />
         </p-inputGroup>
-        <div>
-          <p>Already have account? <a routerLink="/login">Login here</a>.</p>
+        @if (this.isFormSubmitted) {
+        <div class="text-red-500 text-sm">
+          @if (username && username.invalid) { @if
+          (username.hasError('required')){
+          <div>Username is required.</div>
+          } } @if (password && password.invalid) { @if
+          (password.hasError('required')) {
+          <div>Password is required.</div>
+          } @if (password.hasError('minlength')) {
+          <div>Password must be at least 8 characters long.</div>
+          } } @if (confirmPassword && confirmPassword.invalid) { @if
+          (confirmPassword.hasError('required')) {
+          <div>Confirm Password is required.</div>
+          } @if (confirmPassword.hasError('minlength')) {
+          <div>Confirm Password must be at least 8 characters long.</div>
+          } @if (!passwordMatches()) {
+          <div>Password and Confirm Password must match.</div>
+          }} @if (serverErrorMessage) {
+          <div>
+            {{ serverErrorMessage }}. <a routerLink="/login">Login here</a>.
+          </div>
+          }
         </div>
+        }
+        <p>Already have account? <a routerLink="/login">Login here</a>.</p>
         <div class="mt-5 flex justify-end w-full">
           <p-button label="Submit" type="submit"></p-button>
         </div>

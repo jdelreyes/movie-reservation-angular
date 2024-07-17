@@ -10,6 +10,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { PaginatorModule } from 'primeng/paginator';
 import { PageEvent } from '../../../interface/event';
 import { Subject, takeUntil, tap } from 'rxjs';
+import { SpaceToDashPipe } from '../../../pipe';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +23,7 @@ import { Subject, takeUntil, tap } from 'rxjs';
     ImageModule,
     SkeletonModule,
     PaginatorModule,
+    SpaceToDashPipe,
   ],
   templateUrl: './home.component.html',
 })

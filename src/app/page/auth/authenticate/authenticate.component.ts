@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../service/auth/auth.service';
 import {
   FormControl,
@@ -31,23 +31,36 @@ import { FieldsetModule } from 'primeng/fieldset';
   ],
   templateUrl: './authenticate.component.html',
 })
-export class AuthenticateComponent {
+export class AuthenticateComponent implements OnInit {
   public title: string = 'Authenticate';
 
-  public formGroup = new FormGroup({
-    username: new FormControl('', [
-      Validators.required,
-      Validators.minLength(1),
-    ]),
-    password: new FormControl('', [
-      Validators.required,
-      Validators.minLength(8),
-    ]),
-  });
+  public formGroup!: FormGroup;
+  public isFormSubmitted: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  public serverErrorMessage!: string;
+
+  public constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  public ngOnInit(): void {
+    this.formGroup = new FormGroup({
+      username: new FormControl('', [
+        Validators.required,
+        Validators.minLength(1),
+      ]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(8),
+      ]),
+    });
+  }
 
   public authenticate(): void {
+    this.isFormSubmitted = true;
+    if (this.formGroup.invalid) return;
+
     this.authService
       .authenticate({
         username: this.formGroup.value.username!,
@@ -58,9 +71,18 @@ export class AuthenticateComponent {
           this.router.navigateByUrl('/');
         },
         error: (e) => {
-          console.error(e);
+          if (e.status === 404) {
+            this.serverErrorMessage = 'Username does not exist';
+          }
         },
-        complete: () => {},
       });
+  }
+
+  public get username() {
+    return this.formGroup.get('username');
+  }
+
+  public get password() {
+    return this.formGroup.get('password');
   }
 }

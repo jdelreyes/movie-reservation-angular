@@ -1,4 +1,4 @@
-import { MovieImageResponse } from './movie-image.response';
+import { MovieImageResponse } from '.';
 
 export interface MovieResponse {
   id: number;
