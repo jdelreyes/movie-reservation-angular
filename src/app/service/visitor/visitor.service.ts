@@ -5,6 +5,7 @@ import {
   MovieScheduleResponse,
   MovieImageResponse,
   TheaterResponse,
+  TheaterDetailsResponse,
 } from '../../interface/dto';
 import { Observable } from 'rxjs';
 
@@ -27,15 +28,15 @@ export class VisitorService {
     page: number,
     size: number
   ): Observable<MovieResponse[]> {
-    return this.httpClient.get<MovieResponse[]>(
-      `${this.movieUri}?page=${page}&size=${size}`
-    );
+    return this.httpClient.get<MovieResponse[]>(`${this.movieUri}`, {
+      params: { page: page, size: size },
+    });
   }
 
   public getAvailableMoviesByTitleContaining(title: string) {
-    return this.httpClient.get<MovieResponse[]>(
-      `${this.movieScheduleUri}?title=${title}`
-    );
+    return this.httpClient.get<MovieResponse[]>(`${this.movieUri}`, {
+      params: { title: title },
+    });
   }
 
   public getMovieImage(id: number): Observable<MovieImageResponse> {
@@ -44,7 +45,31 @@ export class VisitorService {
     );
   }
 
-  public getMovieSchedules(): Observable<MovieScheduleResponse[]> {
+  public getMovieSchedules(theaterId: number | null, movieId: number | null) {
+    if (theaterId && movieId)
+      return this.httpClient.get<MovieScheduleResponse[]>(
+        this.movieScheduleUri,
+        {
+          params: { theater: theaterId, movie: movieId },
+        }
+      );
+
+    if (theaterId)
+      return this.httpClient.get<MovieScheduleResponse[]>(
+        this.movieScheduleUri,
+        {
+          params: { theater: theaterId },
+        }
+      );
+
+    if (movieId)
+      return this.httpClient.get<MovieScheduleResponse[]>(
+        this.movieScheduleUri,
+        {
+          params: { movie: movieId },
+        }
+      );
+
     return this.httpClient.get<MovieScheduleResponse[]>(this.movieScheduleUri);
   }
 
@@ -57,6 +82,12 @@ export class VisitorService {
   public getTheatersByNameContaining(name: string) {
     return this.httpClient.get<TheaterResponse[]>(
       `${this.theaterUri}?name=${name}`
+    );
+  }
+
+  public getTheater(id: number) {
+    return this.httpClient.get<TheaterDetailsResponse>(
+      `${this.theaterUri}/${id}`
     );
   }
 }

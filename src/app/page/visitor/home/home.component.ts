@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public title: string = 'Movies';
   public movieList: MovieResponse[] = [];
 
-  public totalRecords: number = 0;
+  public totalRecords: number = 4;
 
   public first: number = 0;
   public page: number = 0;

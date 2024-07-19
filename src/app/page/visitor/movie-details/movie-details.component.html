@@ -31,7 +31,7 @@
         }
       </div>
       <div class="p-2 mt-5 self-end">
-        <a routerLink="/dashboard"
+        <a routerLink="/dashboard" [queryParams]="{ movie: movie.id }"
           ><p-button styleClass="text-xl" label="View Movie Schedules"
         /></a>
       </div>

@@ -1,0 +1,58 @@
+<section>
+  <div class="max-w-[1300px] m-auto flex flex-col md:flex-row">
+    <div class="basis-1/3 bg-gray-900 p-2">
+      <div class="my-10 bg-slate-900">
+        <form>
+          <div class="flex flex-col gap-4">
+            <label for="search">Movie</label>
+            <input
+              id="search"
+              pInputText
+              type="text"
+              [formControl]="searchControl"
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+    <div
+      class="grid justify-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full"
+    >
+      @for (movie of movies; track movie.id) {
+      <div class="py-5 w-[250px]">
+        <p-card header="{{ movie.title }}" styleClass="bg-inherit shadow-none">
+          <ng-template pTemplate="header">
+            <a
+              [routerLink]="
+                'movie/' +
+                movie.id +
+                '/' +
+                (movie.title | spacedash | lowercase)
+              "
+            >
+              @if (movie.movieImage){
+              <p-image
+                [src]="
+                  'data:' +
+                  movie.movieImage.type +
+                  ';base64,' +
+                  movie.movieImage.data
+                "
+                class="hover:border-4 rounded-xl border-zinc-900"
+                alt="{{ movie.title }} Image"
+                height="350"
+              />} @else {
+              <img
+                src="/assets/img/placeholder.png"
+                alt="{{ movie.title }} Image"
+                class="hover:border-4 rounded-xl border-zinc-900"
+                height="350"
+              />}
+            </a>
+          </ng-template>
+        </p-card>
+      </div>
+      }
+    </div>
+  </div>
+</section>
