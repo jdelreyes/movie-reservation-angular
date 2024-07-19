@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MovieResponse } from '../../../interface/dto';
 import { VisitorService } from '../../../service/visitor/visitor.service';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { InputTextModule } from 'primeng/inputtext';
@@ -9,6 +9,8 @@ import { ImageModule } from 'primeng/image';
 import { SpaceToDashPipe } from '../../../pipe';
 import { LowerCasePipe } from '@angular/common';
 import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
+import { AutoFocusModule } from 'primeng/autofocus';
 
 @Component({
   selector: 'app-movie-finder',
@@ -21,6 +23,8 @@ import { CardModule } from 'primeng/card';
     SpaceToDashPipe,
     LowerCasePipe,
     CardModule,
+    ButtonModule,
+    AutoFocusModule,
   ],
   templateUrl: './movie-finder.component.html',
 })
@@ -28,7 +32,14 @@ export class MovieFinderComponent implements OnInit {
   public movies: MovieResponse[] = [];
   public searchControl: FormControl = new FormControl();
 
-  constructor(private visitorService: VisitorService) {}
+  @Output()
+  public isMovieChosenEvent = new EventEmitter<boolean>(false);
+
+  constructor(
+    private visitorService: VisitorService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   public ngOnInit(): void {
     this.searchControl.valueChanges
@@ -36,6 +47,18 @@ export class MovieFinderComponent implements OnInit {
       .subscribe((title) => {
         this.getMovies(title);
       });
+  }
+
+  public changeMovieQueryParam(id: number) {
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { movie: id },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  public chooseMovie() {
+    this.isMovieChosenEvent.emit(false);
   }
 
   private getMovies(title: string): void {

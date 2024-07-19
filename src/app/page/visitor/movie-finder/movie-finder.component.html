@@ -1,34 +1,31 @@
 <section>
-  <div class="max-w-[1300px] m-auto flex flex-col md:flex-row">
-    <div class="basis-1/3 bg-gray-900 p-2">
-      <div class="my-10 bg-slate-900">
+  <div class="max-w-[1300px] m-auto flex flex-col md:flex-row gap-4">
+    <div class="basis-1/3 p-2">
+      <div class="my-10">
         <form>
-          <div class="flex flex-col gap-4">
-            <label for="search">Movie</label>
-            <input
-              id="search"
-              pInputText
-              type="text"
-              [formControl]="searchControl"
-            />
-          </div>
+          <input
+            id="search"
+            pInputText
+            placeholder="Search Movie Title"
+            type="text"
+            [formControl]="searchControl"
+            class="w-full"
+            [autofocus]="true"
+          />
         </form>
       </div>
     </div>
     <div
-      class="grid justify-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full"
+      class="basis-2/3 grid justify-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full"
     >
       @for (movie of movies; track movie.id) {
       <div class="py-5 w-[250px]">
         <p-card header="{{ movie.title }}" styleClass="bg-inherit shadow-none">
           <ng-template pTemplate="header">
-            <a
-              [routerLink]="
-                'movie/' +
-                movie.id +
-                '/' +
-                (movie.title | spacedash | lowercase)
-              "
+            <p-button
+              [plain]="true"
+              (onClick)="changeMovieQueryParam(movie.id); chooseMovie()"
+              styleClass="p-0 bg-inherit border-0"
             >
               @if (movie.movieImage){
               <p-image
@@ -48,7 +45,7 @@
                 class="hover:border-4 rounded-xl border-zinc-900"
                 height="350"
               />}
-            </a>
+            </p-button>
           </ng-template>
         </p-card>
       </div>

@@ -7,6 +7,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ImageModule } from 'primeng/image';
+import { SidebarModule } from 'primeng/sidebar';
+import { TheaterFinderComponent } from '../theater-finder/theater-finder.component';
+import { MovieFinderComponent } from '../movie-finder/movie-finder.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,12 +21,18 @@ import { ImageModule } from 'primeng/image';
     RouterLink,
     CardModule,
     ImageModule,
+    SidebarModule,
+    TheaterFinderComponent,
+    MovieFinderComponent,
   ],
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent implements OnInit {
   private movieId: number | null = null;
   private theaterId: number | null = null;
+
+  public isMovieSidebarVisible: boolean = false;
+  public isTheaterSidebarVisible: boolean = false;
 
   public isLoading = false;
 
@@ -50,6 +59,14 @@ export class DashboardComponent implements OnInit {
 
       this.getMovieSchedules();
     });
+  }
+
+  public receiveChosenMovie($event: boolean) {
+    this.isMovieSidebarVisible = $event;
+  }
+
+  public receiveChosenTheater($event: boolean) {
+    this.isTheaterSidebarVisible = $event;
   }
 
   private getMovieSchedules() {

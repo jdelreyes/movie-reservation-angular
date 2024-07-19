@@ -63,8 +63,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.page = event.page;
     this.size = event.rows;
 
-    this.router.navigate([''], {
+    this.router.navigate([], {
+      relativeTo: this.activateRoute,
       queryParams: { page: this.page, size: this.size },
+      queryParamsHandling: 'merge',
     });
 
     this.getAvailableMovies();

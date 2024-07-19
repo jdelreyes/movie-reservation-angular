@@ -15,7 +15,5 @@ export const routes: Routes = [
   { path: 'movie/:id/:title', component: MovieDetailsComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'profile', component: ProfileComponent },
-  { path: 'movie-finder', component: MovieFinderComponent },
-  { path: 'theater-finder', component: TheaterFinderComponent },
   { path: '**', component: HomeComponent },
 ];
