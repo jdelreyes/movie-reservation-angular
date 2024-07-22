@@ -1,27 +1,39 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
-import { CookieService } from 'ngx-cookie-service';
 import { SplitButtonModule } from 'primeng/splitbutton';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { AuthService } from '../../../service/auth/auth.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faCameraRetro, faIcons } from '@fortawesome/free-solid-svg-icons';
+import { ToastModule } from 'primeng/toast';
+import { LocalStorageService } from '../../../service/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [ButtonModule, RouterLink, SplitButtonModule],
-  providers: [CookieService],
+  imports: [
+    ButtonModule,
+    RouterLink,
+    SplitButtonModule,
+    FontAwesomeModule,
+    ToastModule,
+  ],
+  providers: [MessageService],
   templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit {
   public title: string = 'Movie Reservation App';
   public username: string | null = null;
   public items: MenuItem[] = [];
+  public faCameraRetro = faCameraRetro;
+  public faIcons = faIcons;
 
   public constructor(
-    private cookieService: CookieService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private messageService: MessageService,
+    private localStorageService: LocalStorageService
   ) {}
 
   public ngOnInit(): void {
@@ -38,8 +50,11 @@ export class HeaderComponent implements OnInit {
         command: () => {
           this.authService.logout().subscribe({
             next: (v) => {
-              this.cookieService.deleteAll();
-              this.router.navigate(['']);
+              this.localStorageService.clearLocalStorage();
+              this.router.navigate(['/']);
+            },
+            complete: () => {
+              this.showToast();
             },
           });
         },
@@ -50,14 +65,22 @@ export class HeaderComponent implements OnInit {
   }
 
   public isLoggedIn(): boolean {
-    return this.cookieService.check('username');
+    return this.localStorageService.check();
   }
 
   public navigateToProfile(): void {
     this.router.navigateByUrl('/profile');
   }
 
+  private showToast(): void {
+    this.messageService.add({
+      severity: 'success',
+      detail: 'Successfully Logged Out',
+      summary: 'Success',
+    });
+  }
+
   private getName(): void {
-    if (this.isLoggedIn()) this.username = this.cookieService.get('username');
+    if (this.isLoggedIn()) this.username = this.localStorageService.getCurrentUsername();
   }
 }

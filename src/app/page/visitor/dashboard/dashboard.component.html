@@ -1,11 +1,11 @@
 <section>
-  <div class="max-w-[1300px] m-auto flex flex-col md:flex-row">
+  <div class="max-w-[1300px] m-auto flex flex-col lg:flex-row gap-10 p-2">
     <div class="basis-1/3 bg-gray-900">
       <div class="my-10 bg-slate-900">
         <div class="flex flex-col">
           <p-sidebar
             [(visible)]="isTheaterSidebarVisible"
-            styleClass="w-[95vw] h-[95vh] mx-[2.5vw] my-[2.5vh]"
+            styleClass="w-[90vw] h-[90vh] mx-[5vw] my-[5vh]"
             [fullScreen]="true"
           >
             <ng-template pTemplate="header">
@@ -51,18 +51,134 @@
         <div class="flex flex-col">
           <label class="my-5" for="Date">Date</label>
           <p-calendar
+            [(ngModel)]="date"
+            (ngModelChange)="onDateChange($event)"
             id="Date"
-            [inline]="true"
-            [showWeek]="true"
-            class="w-full"
+            [minDate]="this.minDate"
+            [maxDate]="this.maxDate"
+            [showIcon]="true"
+            styleClass="w-full"
           />
         </div>
       </div>
     </div>
-    <div class="basis-2/3 grid grid-cols-1 md:grid-cols-2 w-full">
-      @for (movieSchedule of movieSchedules; track movieSchedule.id) {
-      <!-- todo: make a list of movie schedules, could be grid or a normal list -->
-      }
+    <div class="basis-2/3">
+      <div class="my-14">
+        <div class="flex flex-row justify-end gap-3 my-3">
+          @if (this.movieId) {
+          <p-button
+            label="Movie"
+            icon="pi pi-times"
+            iconPos="right"
+            [rounded]="true"
+            (onClick)="removeMovieQueryParameter()"
+            severity="danger"
+          />} @if (this.theaterId) {
+          <p-button
+            label="Theater"
+            icon="pi pi-times"
+            iconPos="right"
+            [rounded]="true"
+            (onClick)="removeTheaterQueryParameter()"
+            severity="danger"
+          />} @if (this.date) {
+          <p-button
+            label="Date"
+            icon="pi pi-times"
+            iconPos="right"
+            [rounded]="true"
+            (onClick)="removeDateQueryParameter()"
+            severity="danger"
+          />
+          }
+        </div>
+        <p-accordion [activeIndex]="[0]">
+          @for (movieSchedule of movieSchedules; track movieSchedule.id) {
+          <!-- TODO ------------------------------------------------------- -->
+          <p-accordionTab
+            headerStyleClass="text-2xl"
+            [header]="movieSchedule.movie.title"
+          >
+            <div class="flex flex-col md:flex-row w-full text-lg">
+              <div class="p-5">
+                @if (movieSchedule.movie.movieImage){
+                <p-image
+                  [src]="
+                    'data:' +
+                    movieSchedule.movie.movieImage.type +
+                    ';base64,' +
+                    movieSchedule.movie.movieImage.data
+                  "
+                  class="hover:border-4 rounded-xl border-zinc-900"
+                  alt="{{ movieSchedule.movie.title }} Image"
+                  height="350"
+                />} @else {
+                <img
+                  src="/assets/img/placeholder.png"
+                  alt="{{ movieSchedule.movie.title }} Image"
+                  class="hover:border-4 rounded-xl border-zinc-900"
+                  height="350"
+                />}
+              </div>
+              <div>
+                <p class="text-xl font-extralight opacity-75">
+                  {{ movieSchedule.movie.description }}
+                </p>
+                <div class="text-right">
+                  @for (director of movieSchedule.movie.directors; track $index)
+                  {
+                  <cite class="block">{{ director }}</cite>
+                  }
+                </div>
+                <p-divider />
+                <div>
+                  <i class="pi pi-calendar"></i>
+                  <span>
+                    {{ movieSchedule.startDateTime | isodate | datestring }}
+                  </span>
+                </div>
+                <br />
+                <div>
+                  <i class="pi pi-clock"></i>
+                  <span>
+                    {{
+                      movieSchedule.startDateTime
+                        | isodate
+                        | datelocaletimestring
+                    }}
+                    -
+                    {{
+                      movieSchedule.endDateTime | isodate | datelocaletimestring
+                    }}</span
+                  >
+                </div>
+                <br />
+                <div>
+                  <i class="pi pi-map-marker"></i>
+                  <span>
+                    {{ movieSchedule.theater.name }},
+                    {{ movieSchedule.theater.location }}
+                  </span>
+                </div>
+                <p-divider />
+                @for (genre of movieSchedule.movie.genres; track $index) {
+                <p-tag
+                  styleClass="text-lg py-2 px-3 m-1"
+                  severity="info"
+                  [rounded]="true"
+                  value="{{ genre | underscorespace | titlecase }}"
+                />
+                }
+                <div class="flex flex-row justify-end">
+                  <p-button label="Buy Ticket" />
+                </div>
+              </div>
+            </div>
+          </p-accordionTab>
+          <!-- TODO ------------------------------------------------------- END -->
+          }
+        </p-accordion>
+      </div>
     </div>
   </div>
 </section>

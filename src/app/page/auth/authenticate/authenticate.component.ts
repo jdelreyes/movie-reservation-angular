@@ -14,6 +14,7 @@ import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
 import { Router, RouterLink } from '@angular/router';
 import { FieldsetModule } from 'primeng/fieldset';
+import { LocalStorageService } from '../../../service/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-authenticate',
@@ -41,7 +42,8 @@ export class AuthenticateComponent implements OnInit {
 
   public constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private localStorageService: LocalStorageService
   ) {}
 
   public ngOnInit(): void {
@@ -68,6 +70,7 @@ export class AuthenticateComponent implements OnInit {
       })
       .subscribe({
         next: (v) => {
+          this.localStorageService.setAuthResponse(v);
           this.router.navigateByUrl('/');
         },
         error: (e) => {

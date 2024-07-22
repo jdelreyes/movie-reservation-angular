@@ -1,11 +1,14 @@
 <nav class="bg-gray-900 sticky top-0 px-3 shadow-lg z-10">
   <div class="flex justify-between items-center m-auto max-w-[1300px]">
-    <header>
-      <a href="/"><img src="/assets/img/logo.png" alt="Logo" width="80" /></a>
+    <header class="m-2">
+      <a routerLink="/">
+        <fa-icon size="4x" [icon]="faIcons" />
+      </a>
     </header>
     <ul class="flex flex-row list-none items-center p-0">
       @if (isLoggedIn()) {
       <li>
+        <p-toast />
         <p-splitButton
           label="{{ username }}"
           (onClick)="navigateToProfile()"

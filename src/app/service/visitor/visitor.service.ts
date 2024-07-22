@@ -45,32 +45,19 @@ export class VisitorService {
     );
   }
 
-  public getMovieSchedules(theaterId: number | null, movieId: number | null) {
-    if (theaterId && movieId)
-      return this.httpClient.get<MovieScheduleResponse[]>(
-        this.movieScheduleUri,
-        {
-          params: { theater: theaterId, movie: movieId },
-        }
-      );
+  public getMovieSchedules(
+    theaterId: number | null,
+    movieId: number | null,
+    date: string | null = null
+  ) {
+    const params: any = {};
+    if (theaterId) params.theater = theaterId;
+    if (movieId) params.movie = movieId;
+    if (date) params.date = date;
 
-    if (theaterId)
-      return this.httpClient.get<MovieScheduleResponse[]>(
-        this.movieScheduleUri,
-        {
-          params: { theater: theaterId },
-        }
-      );
-
-    if (movieId)
-      return this.httpClient.get<MovieScheduleResponse[]>(
-        this.movieScheduleUri,
-        {
-          params: { movie: movieId },
-        }
-      );
-
-    return this.httpClient.get<MovieScheduleResponse[]>(this.movieScheduleUri);
+    return this.httpClient.get<MovieScheduleResponse[]>(this.movieScheduleUri, {
+      params,
+    });
   }
 
   public getMovieSchedule(id: number): Observable<MovieScheduleResponse> {
