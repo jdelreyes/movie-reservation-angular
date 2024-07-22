@@ -5,8 +5,8 @@ import { HomeComponent } from './page/visitor/home/home.component';
 import { MovieDetailsComponent } from './page/visitor/movie-details/movie-details.component';
 import { DashboardComponent } from './page/visitor/dashboard/dashboard.component';
 import { ProfileComponent } from './page/user/profile/profile.component';
-import { MovieFinderComponent } from './page/visitor/movie-finder/movie-finder.component';
-import { TheaterFinderComponent } from './page/visitor/theater-finder/theater-finder.component';
+import { authGuard } from './guard/auth.guard';
+import { BuyTicketComponent } from './page/user/buy-ticket/buy-ticket.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -14,6 +14,11 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'movie/:id/:title', component: MovieDetailsComponent },
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'profile', component: ProfileComponent },
+  { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
+  {
+    path: 'buy-ticket',
+    component: BuyTicketComponent,
+    canActivate: [authGuard],
+  },
   { path: '**', component: HomeComponent },
 ];

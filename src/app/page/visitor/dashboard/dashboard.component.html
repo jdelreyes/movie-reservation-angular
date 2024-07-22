@@ -94,7 +94,6 @@
         </div>
         <p-accordion [activeIndex]="[0]">
           @for (movieSchedule of movieSchedules; track movieSchedule.id) {
-          <!-- TODO ------------------------------------------------------- -->
           <p-accordionTab
             headerStyleClass="text-2xl"
             [header]="movieSchedule.movie.title"
@@ -170,12 +169,18 @@
                 />
                 }
                 <div class="flex flex-row justify-end">
-                  <p-button label="Buy Ticket" />
+                  <p-button
+                    label="Buy Ticket"
+                    [routerLink]="['/buy-ticket']"
+                    [queryParams]="{
+                      movie: movieSchedule.movie.id,
+                      theater: movieSchedule.theater.id
+                    }"
+                  />
                 </div>
               </div>
             </div>
           </p-accordionTab>
-          <!-- TODO ------------------------------------------------------- END -->
           }
         </p-accordion>
       </div>

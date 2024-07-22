@@ -2,18 +2,13 @@ import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthRequest, AuthResponse } from '../../interface/dto';
 import { Observable } from 'rxjs';
-import { CookieService } from 'ngx-cookie-service';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private authUri: string = 'http://localhost:8080/api/auth';
 
-  constructor(
-    private httpClient: HttpClient,
-    // todo: test if working
-    private cookieService: CookieService
-  ) {}
+  constructor(private httpClient: HttpClient) {}
 
   public authenticate(authRequest: AuthRequest): Observable<AuthResponse> {
     return this.httpClient.post<AuthResponse>(
@@ -31,10 +26,5 @@ export class AuthService {
     return this.httpClient.put<void>(this.authUri + '/logout', null, {
       withCredentials: true,
     });
-  }
-
-  public isCurrentUserAdmin() {
-    console.log(this.cookieService.get('roles'));
-    // this.cookieService.get('roles');
   }
 }

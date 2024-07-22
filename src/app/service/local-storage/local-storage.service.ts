@@ -7,26 +7,51 @@ import { AuthResponse } from '../../interface/dto';
 export class LocalStorageService {
   constructor() {}
 
+  private isLocalStorageAvailable(): boolean {
+    try {
+      const testKey = 'test';
+      localStorage.setItem(testKey, 'testValue');
+      localStorage.removeItem(testKey);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   public setAuthResponse(authResponse: AuthResponse): void {
-    localStorage.setItem('username', authResponse.username);
-    localStorage.setItem('roles', JSON.stringify(authResponse.roles));
+    if (this.isLocalStorageAvailable()) {
+      localStorage.setItem('username', authResponse.username);
+      localStorage.setItem('roles', JSON.stringify(authResponse.roles));
+    }
   }
 
   public check(): boolean {
+    if (!this.isLocalStorageAvailable()) {
+      return false;
+    }
     return (
       !!localStorage.getItem('username') && !!localStorage.getItem('roles')
     );
   }
 
-  public getCurrentUsername(): string {
-    return localStorage.getItem('username')!;
+  public getCurrentUsername(): string | null {
+    if (!this.isLocalStorageAvailable()) {
+      return null;
+    }
+    return localStorage.getItem('username');
   }
 
-  public getCurrentUserRoles(): string[] {
-    return JSON.parse(localStorage.getItem('roles')!);
+  public getCurrentUserRoles(): string[] | null {
+    if (!this.isLocalStorageAvailable()) {
+      return null;
+    }
+    const roles = localStorage.getItem('roles');
+    return roles ? JSON.parse(roles) : null;
   }
 
   public clearLocalStorage(): void {
-    localStorage.clear();
+    if (this.isLocalStorageAvailable()) {
+      localStorage.clear();
+    }
   }
 }

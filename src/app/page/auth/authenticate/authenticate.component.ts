@@ -77,6 +77,9 @@ export class AuthenticateComponent implements OnInit {
           if (e.status === 404) {
             this.serverErrorMessage = 'Username does not exist';
           }
+          if (e.status === 409) {
+            this.serverErrorMessage = 'Username and/or password is incorrect';
+          }
         },
       });
   }
