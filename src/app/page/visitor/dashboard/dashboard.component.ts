@@ -48,30 +48,30 @@ import { DividerModule } from 'primeng/divider';
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent implements OnInit {
-  public movieId: number | null = null;
-  public theaterId: number | null = null;
-  public date: Date | null = null;
+  movieId: number | null = null;
+  theaterId: number | null = null;
+  date: Date | null = null;
 
-  public isMovieSidebarVisible = false;
-  public isTheaterSidebarVisible = false;
+  isMovieSidebarVisible = false;
+  isTheaterSidebarVisible = false;
 
-  public isLoading = false;
+  isLoading = false;
 
-  public movieLabel: string = 'Any Movie';
-  public theaterLabel: string = 'Any Theater';
+  movieLabel: string = 'Any Movie';
+  theaterLabel: string = 'Any Theater';
 
-  public movieSchedules: MovieScheduleResponse[] = [];
+  movieSchedules: MovieScheduleResponse[] = [];
 
-  public minDate: Date = new Date();
-  public maxDate: Date = new Date(new Date().setDate(new Date().getDate() + 7));
+  minDate: Date = new Date();
+  maxDate: Date = new Date(new Date().setDate(new Date().getDate() + 7));
 
-  public constructor(
+  constructor(
     private visitorService: VisitorService,
     private activatedRoute: ActivatedRoute,
     private router: Router
   ) {}
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.movieId = params['movie'] ? Number(params['movie']) : null;
       this.theaterId = params['theater'] ? Number(params['theater']) : null;
@@ -84,15 +84,15 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  public receiveChosenMovie($event: boolean) {
+  receiveChosenMovie($event: boolean) {
     this.isMovieSidebarVisible = $event;
   }
 
-  public receiveChosenTheater($event: boolean) {
+  receiveChosenTheater($event: boolean) {
     this.isTheaterSidebarVisible = $event;
   }
 
-  public removeMovieQueryParameter() {
+  removeMovieQueryParameter() {
     this.movieId = null;
     this.movieLabel = 'Any Movie';
 
@@ -103,7 +103,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  public removeTheaterQueryParameter() {
+  removeTheaterQueryParameter() {
     this.theaterId = null;
     this.theaterLabel = 'Any Theater';
 
@@ -114,7 +114,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  public removeDateQueryParameter() {
+  removeDateQueryParameter() {
     this.date = null;
 
     this.router.navigate([], {
@@ -124,7 +124,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  public onDateChange(event: Date) {
+  onDateChange(event: Date) {
     this.date = event;
 
     this.router.navigate([], {

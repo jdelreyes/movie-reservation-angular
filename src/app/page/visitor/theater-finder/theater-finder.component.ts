@@ -25,19 +25,19 @@ import { CommonModule } from '@angular/common';
   templateUrl: './theater-finder.component.html',
 })
 export class TheaterFinderComponent implements OnInit {
-  public theaters: TheaterResponse[] = [];
-  public searchControl: FormControl = new FormControl();
+  theaters: TheaterResponse[] = [];
+  searchControl: FormControl = new FormControl();
 
   @Output()
-  public isTheaterChosenEvent = new EventEmitter<boolean>(false);
+  isTheaterChosenEvent = new EventEmitter<boolean>(false);
 
-  public constructor(
+  constructor(
     private visitorService: VisitorService,
     private activatedRoute: ActivatedRoute,
     private router: Router
   ) {}
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.searchControl.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged())
       .subscribe((name) => {
@@ -45,7 +45,7 @@ export class TheaterFinderComponent implements OnInit {
       });
   }
 
-  public changeTheaterQueryParam(id: number) {
+  changeTheaterQueryParam(id: number) {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
       queryParams: { theater: id },
@@ -53,7 +53,7 @@ export class TheaterFinderComponent implements OnInit {
     });
   }
 
-  public chooseTheater() {
+  chooseTheater() {
     this.isTheaterChosenEvent.emit(false);
   }
 

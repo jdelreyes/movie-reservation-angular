@@ -7,25 +7,14 @@ import { AuthResponse } from '../../interface/dto';
 export class LocalStorageService {
   constructor() {}
 
-  private isLocalStorageAvailable(): boolean {
-    try {
-      const testKey = 'test';
-      localStorage.setItem(testKey, 'testValue');
-      localStorage.removeItem(testKey);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  public setAuthResponse(authResponse: AuthResponse): void {
+  setAuthResponse(authResponse: AuthResponse): void {
     if (this.isLocalStorageAvailable()) {
       localStorage.setItem('username', authResponse.username);
       localStorage.setItem('roles', JSON.stringify(authResponse.roles));
     }
   }
 
-  public check(): boolean {
+  check(): boolean {
     if (!this.isLocalStorageAvailable()) {
       return false;
     }
@@ -34,14 +23,14 @@ export class LocalStorageService {
     );
   }
 
-  public getCurrentUsername(): string | null {
+  getCurrentUsername(): string | null {
     if (!this.isLocalStorageAvailable()) {
       return null;
     }
     return localStorage.getItem('username');
   }
 
-  public getCurrentUserRoles(): string[] | null {
+  getCurrentUserRoles(): string[] | null {
     if (!this.isLocalStorageAvailable()) {
       return null;
     }
@@ -49,9 +38,20 @@ export class LocalStorageService {
     return roles ? JSON.parse(roles) : null;
   }
 
-  public clearLocalStorage(): void {
+  clearLocalStorage(): void {
     if (this.isLocalStorageAvailable()) {
       localStorage.clear();
+    }
+  }
+
+  private isLocalStorageAvailable(): boolean {
+    try {
+      const testKey = 'test';
+      localStorage.setItem(testKey, 'testValue');
+      localStorage.removeItem(testKey);
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 }

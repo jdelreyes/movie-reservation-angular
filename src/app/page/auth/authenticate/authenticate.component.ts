@@ -33,20 +33,20 @@ import { LocalStorageService } from '../../../service/local-storage/local-storag
   templateUrl: './authenticate.component.html',
 })
 export class AuthenticateComponent implements OnInit {
-  public title: string = 'Authenticate';
+  title: string = 'Authenticate';
 
-  public formGroup!: FormGroup;
-  public isFormSubmitted: boolean = false;
+  formGroup!: FormGroup;
+  isFormSubmitted: boolean = false;
 
-  public serverErrorMessage!: string;
+  serverErrorMessage!: string;
 
-  public constructor(
+  constructor(
     private authService: AuthService,
     private router: Router,
     private localStorageService: LocalStorageService
   ) {}
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.formGroup = new FormGroup({
       username: new FormControl('', [
         Validators.required,
@@ -59,7 +59,7 @@ export class AuthenticateComponent implements OnInit {
     });
   }
 
-  public authenticate(): void {
+  authenticate(): void {
     this.isFormSubmitted = true;
     if (this.formGroup.invalid) return;
 
@@ -84,11 +84,11 @@ export class AuthenticateComponent implements OnInit {
       });
   }
 
-  public get username() {
+  get username() {
     return this.formGroup.get('username');
   }
 
-  public get password() {
+  get password() {
     return this.formGroup.get('password');
   }
 }

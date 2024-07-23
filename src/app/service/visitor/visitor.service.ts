@@ -20,32 +20,29 @@ export class VisitorService {
 
   constructor(private httpClient: HttpClient) {}
 
-  public getMovie(id: number): Observable<MovieResponse> {
+  getMovie(id: number): Observable<MovieResponse> {
     return this.httpClient.get<MovieResponse>(this.movieUri + '/' + id);
   }
 
-  public getAvailableMovies(
-    page: number,
-    size: number
-  ): Observable<MovieResponse[]> {
+  getAvailableMovies(page: number, size: number): Observable<MovieResponse[]> {
     return this.httpClient.get<MovieResponse[]>(`${this.movieUri}`, {
       params: { page: page, size: size },
     });
   }
 
-  public getAvailableMoviesByTitleContaining(title: string) {
+  getAvailableMoviesByTitleContaining(title: string) {
     return this.httpClient.get<MovieResponse[]>(`${this.movieUri}`, {
       params: { title: title },
     });
   }
 
-  public getMovieImage(id: number): Observable<MovieImageResponse> {
+  getMovieImage(id: number): Observable<MovieImageResponse> {
     return this.httpClient.get<MovieImageResponse>(
       this.movieUri + '/' + id + '/image'
     );
   }
 
-  public getMovieSchedules(
+  getMovieSchedules(
     theaterId: number | null,
     movieId: number | null,
     date: string | null = null
@@ -60,19 +57,19 @@ export class VisitorService {
     });
   }
 
-  public getMovieSchedule(id: number): Observable<MovieScheduleResponse> {
+  getMovieSchedule(id: number): Observable<MovieScheduleResponse> {
     return this.httpClient.get<MovieScheduleResponse>(
       this.movieScheduleUri + '/' + id
     );
   }
 
-  public getTheatersByNameContaining(name: string) {
+  getTheatersByNameContaining(name: string) {
     return this.httpClient.get<TheaterResponse[]>(
       `${this.theaterUri}?name=${name}`
     );
   }
 
-  public getTheater(id: number) {
+  getTheater(id: number) {
     return this.httpClient.get<TheaterDetailsResponse>(
       `${this.theaterUri}/${id}`
     );

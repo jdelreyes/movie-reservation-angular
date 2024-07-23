@@ -23,20 +23,20 @@ import { LocalStorageService } from '../../../service/local-storage/local-storag
   templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit {
-  public title: string = 'Movie Reservation App';
-  public username: string | null = null;
-  public items: MenuItem[] = [];
-  public faCameraRetro = faCameraRetro;
-  public faIcons = faIcons;
+  title: string = 'Movie Reservation App';
+  username: string | null = null;
+  items: MenuItem[] = [];
+  faCameraRetro = faCameraRetro;
+  faIcons = faIcons;
 
-  public constructor(
+  constructor(
     private router: Router,
     private authService: AuthService,
     private messageService: MessageService,
     private localStorageService: LocalStorageService
   ) {}
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.items = [
       {
         label: 'Profile',
@@ -64,11 +64,11 @@ export class HeaderComponent implements OnInit {
     this.getName();
   }
 
-  public isLoggedIn(): boolean {
+  isLoggedIn(): boolean {
     return this.localStorageService.check();
   }
 
-  public navigateToProfile(): void {
+  navigateToProfile(): void {
     this.router.navigateByUrl('/profile');
   }
 
@@ -81,6 +81,7 @@ export class HeaderComponent implements OnInit {
   }
 
   private getName(): void {
-    if (this.isLoggedIn()) this.username = this.localStorageService.getCurrentUsername();
+    if (this.isLoggedIn())
+      this.username = this.localStorageService.getCurrentUsername();
   }
 }

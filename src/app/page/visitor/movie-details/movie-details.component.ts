@@ -24,9 +24,9 @@ import { UnderscoreToSpacePipe } from '../../../pipe/underscore-space.pipe';
 export class MovieDetailsComponent implements OnInit {
   private id: number = Number(this.activatedRoute.snapshot.paramMap.get('id'));
 
-  public movie!: MovieResponse;
+  movie!: MovieResponse;
 
-  public constructor(
+  constructor(
     private visitorService: VisitorService,
     private activatedRoute: ActivatedRoute
   ) {}

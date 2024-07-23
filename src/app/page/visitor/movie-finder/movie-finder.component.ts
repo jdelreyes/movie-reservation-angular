@@ -29,11 +29,11 @@ import { AutoFocusModule } from 'primeng/autofocus';
   templateUrl: './movie-finder.component.html',
 })
 export class MovieFinderComponent implements OnInit {
-  public movies: MovieResponse[] = [];
-  public searchControl: FormControl = new FormControl();
+  movies: MovieResponse[] = [];
+  searchControl: FormControl = new FormControl();
 
   @Output()
-  public isMovieChosenEvent = new EventEmitter<boolean>(false);
+  isMovieChosenEvent = new EventEmitter<boolean>(false);
 
   constructor(
     private visitorService: VisitorService,
@@ -41,7 +41,7 @@ export class MovieFinderComponent implements OnInit {
     private activatedRoute: ActivatedRoute
   ) {}
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.searchControl.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged())
       .subscribe((title) => {
@@ -49,7 +49,7 @@ export class MovieFinderComponent implements OnInit {
       });
   }
 
-  public changeMovieQueryParam(id: number) {
+  changeMovieQueryParam(id: number) {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
       queryParams: { movie: id },
@@ -57,7 +57,7 @@ export class MovieFinderComponent implements OnInit {
     });
   }
 
-  public chooseMovie() {
+  chooseMovie() {
     this.isMovieChosenEvent.emit(false);
   }
 

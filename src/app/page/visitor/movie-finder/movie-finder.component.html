@@ -27,24 +27,19 @@
               (onClick)="changeMovieQueryParam(movie.id); chooseMovie()"
               styleClass="p-0 bg-inherit border-0"
             >
-              @if (movie.movieImage){
               <p-image
                 [src]="
-                  'data:' +
-                  movie.movieImage.type +
-                  ';base64,' +
-                  movie.movieImage.data
+                  movie.movieImage
+                    ? 'data:' +
+                      movie.movieImage.type +
+                      ';base64,' +
+                      movie.movieImage.data
+                    : '/assets/img/placeholder.png'
                 "
                 class="hover:border-4 rounded-xl border-zinc-900"
                 alt="{{ movie.title }} Image"
                 height="350"
-              />} @else {
-              <img
-                src="/assets/img/placeholder.png"
-                alt="{{ movie.title }} Image"
-                class="hover:border-4 rounded-xl border-zinc-900"
-                height="350"
-              />}
+              />
             </p-button>
           </ng-template>
         </p-card>

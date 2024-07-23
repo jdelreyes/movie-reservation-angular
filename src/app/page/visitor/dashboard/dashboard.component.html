@@ -100,24 +100,19 @@
           >
             <div class="flex flex-col md:flex-row w-full text-lg">
               <div class="p-5">
-                @if (movieSchedule.movie.movieImage){
                 <p-image
                   [src]="
-                    'data:' +
-                    movieSchedule.movie.movieImage.type +
-                    ';base64,' +
-                    movieSchedule.movie.movieImage.data
+                    movieSchedule.movie.movieImage
+                      ? 'data:' +
+                        movieSchedule.movie.movieImage.type +
+                        ';base64,' +
+                        movieSchedule.movie.movieImage.data
+                      : 'assets/img/placeholder.png'
                   "
                   class="hover:border-4 rounded-xl border-zinc-900"
                   alt="{{ movieSchedule.movie.title }} Image"
                   height="350"
-                />} @else {
-                <img
-                  src="/assets/img/placeholder.png"
-                  alt="{{ movieSchedule.movie.title }} Image"
-                  class="hover:border-4 rounded-xl border-zinc-900"
-                  height="350"
-                />}
+                />
               </div>
               <div>
                 <p class="text-xl font-extralight opacity-75">

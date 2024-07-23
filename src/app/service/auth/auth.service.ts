@@ -10,7 +10,7 @@ export class AuthService {
 
   constructor(private httpClient: HttpClient) {}
 
-  public authenticate(authRequest: AuthRequest): Observable<AuthResponse> {
+   authenticate(authRequest: AuthRequest): Observable<AuthResponse> {
     return this.httpClient.post<AuthResponse>(
       this.authUri + '/authenticate',
       authRequest,
@@ -18,11 +18,11 @@ export class AuthService {
     );
   }
 
-  public register(authRequest: AuthRequest): Observable<void> {
+   register(authRequest: AuthRequest): Observable<void> {
     return this.httpClient.post<void>(this.authUri + '/register', authRequest);
   }
 
-  public logout() {
+   logout() {
     return this.httpClient.put<void>(this.authUri + '/logout', null, {
       withCredentials: true,
     });

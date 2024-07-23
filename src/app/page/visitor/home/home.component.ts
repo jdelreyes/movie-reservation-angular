@@ -28,25 +28,25 @@ import { SpaceToDashPipe } from '../../../pipe';
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  public title: string = 'Movies';
-  public movieList: MovieResponse[] = [];
+  title: string = 'Movies';
+  movieList: MovieResponse[] = [];
 
-  public totalRecords: number = 4;
+  totalRecords: number = 4;
 
-  public first: number = 0;
-  public page: number = 0;
-  public size: number = 4;
+  first: number = 0;
+  page: number = 0;
+  size: number = 4;
 
-  public isLoading: boolean = true;
-  private unsubscribe$: Subject<unknown> = new Subject();
+  isLoading: boolean = true;
+  unsubscribe$: Subject<unknown> = new Subject();
 
-  public constructor(
+  constructor(
     private visitorService: VisitorService,
     private router: Router,
     private activateRoute: ActivatedRoute
   ) {}
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.activateRoute.queryParams.subscribe((params) => {
       if (params['page']) this.page = params['page'];
       if (params['size']) this.size = params['size'];
@@ -54,12 +54,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getAvailableMovies();
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     this.unsubscribe$.next(true);
     this.unsubscribe$.complete();
   }
 
-  public onPageChange(event: PageEvent) {
+  onPageChange(event: PageEvent) {
     this.page = event.page;
     this.size = event.rows;
 

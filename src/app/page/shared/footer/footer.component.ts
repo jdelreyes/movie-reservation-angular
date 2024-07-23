@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { DividerModule } from 'primeng/divider';
 
 @Component({
@@ -9,5 +8,5 @@ import { DividerModule } from 'primeng/divider';
   templateUrl: './footer.component.html',
 })
 export class FooterComponent {
-  public constructor(private router: Router) {}
+  constructor() {}
 }

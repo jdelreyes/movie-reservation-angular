@@ -33,19 +33,16 @@ import { Router, RouterLink } from '@angular/router';
   templateUrl: './register.component.html',
 })
 export class RegisterComponent implements OnInit {
-  public title: string = 'Register';
+  title: string = 'Register';
 
-  public formGroup!: FormGroup;
-  public isFormSubmitted: boolean = false;
+  formGroup!: FormGroup;
+  isFormSubmitted: boolean = false;
 
-  public serverErrorMessage!: string;
+  serverErrorMessage!: string;
 
-  public constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.formGroup = new FormGroup({
       username: new FormControl('', [
         Validators.required,
@@ -62,13 +59,13 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  public passwordMatches(): boolean {
+  passwordMatches(): boolean {
     return (
       this.formGroup.value.password === this.formGroup.value.confirmPassword
     );
   }
 
-  public register(): void {
+  register(): void {
     this.isFormSubmitted = true;
     if (!this.passwordMatches()) return;
     if (this.formGroup.invalid) return;
@@ -90,15 +87,15 @@ export class RegisterComponent implements OnInit {
       });
   }
 
-  public get username() {
+  get username() {
     return this.formGroup.get('username');
   }
 
-  public get password() {
+  get password() {
     return this.formGroup.get('password');
   }
 
-  public get confirmPassword() {
+  get confirmPassword() {
     return this.formGroup.get('confirmPassword');
   }
 }
