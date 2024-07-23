@@ -14,5 +14,7 @@ export const authGuard: CanActivateFn = (
   const localStorageService: LocalStorageService = inject(LocalStorageService);
   const router: Router = inject(Router);
 
-  return localStorageService.check() ? true : router.navigate(['/login']);
+  return localStorageService.hasSession()
+    ? true
+    : router.navigate(['/login'], { queryParams: { redirect: route.url } });
 };

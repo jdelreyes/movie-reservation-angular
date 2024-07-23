@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { Route } from '@angular/router';
 import { AuthenticateComponent } from './page/auth/authenticate/authenticate.component';
 import { RegisterComponent } from './page/auth/register/register.component';
 import { HomeComponent } from './page/visitor/home/home.component';
@@ -8,7 +8,7 @@ import { ProfileComponent } from './page/user/profile/profile.component';
 import { authGuard } from './guard/auth.guard';
 import { BuyTicketComponent } from './page/user/buy-ticket/buy-ticket.component';
 
-export const routes: Routes = [
+export const routes: Route[] = [
   { path: '', component: HomeComponent },
   { path: 'login', component: AuthenticateComponent },
   { path: 'register', component: RegisterComponent },

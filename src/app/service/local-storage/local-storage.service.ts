@@ -14,7 +14,7 @@ export class LocalStorageService {
     }
   }
 
-  check(): boolean {
+  hasSession(): boolean {
     if (!this.isLocalStorageAvailable()) {
       return false;
     }

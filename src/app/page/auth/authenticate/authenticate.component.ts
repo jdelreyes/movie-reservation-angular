@@ -12,7 +12,7 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FieldsetModule } from 'primeng/fieldset';
 import { LocalStorageService } from '../../../service/local-storage/local-storage.service';
 
@@ -33,6 +33,9 @@ import { LocalStorageService } from '../../../service/local-storage/local-storag
   templateUrl: './authenticate.component.html',
 })
 export class AuthenticateComponent implements OnInit {
+  private redirect: string | null =
+    this.activatedRoute.snapshot.queryParamMap.get('redirect');
+
   title: string = 'Authenticate';
 
   formGroup!: FormGroup;
@@ -43,7 +46,8 @@ export class AuthenticateComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -71,13 +75,17 @@ export class AuthenticateComponent implements OnInit {
       .subscribe({
         next: (v) => {
           this.localStorageService.setAuthResponse(v);
-          this.router.navigateByUrl('/');
+
+          if (this.redirect) this.router.navigate(['/' + this.redirect]);
+          else this.router.navigateByUrl('/');
         },
         error: (e) => {
-          if (e.status === 404) {
+          const NOT_FOUND_STATUS_CODE: number = 404;
+          const CONFLICT_STATUS_CODE: number = 409;
+
+          if (e.status === NOT_FOUND_STATUS_CODE) {
             this.serverErrorMessage = 'Username does not exist';
-          }
-          if (e.status === 409) {
+          } else if (e.status === CONFLICT_STATUS_CODE) {
             this.serverErrorMessage = 'Username and/or password is incorrect';
           }
         },

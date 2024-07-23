@@ -28,7 +28,7 @@
         <div class="flex flex-col">
           <p-sidebar
             [(visible)]="isMovieSidebarVisible"
-            styleClass="w-[95vw] h-[95vh] mx-[2.5vw] my-[2.5vh]"
+            styleClass="w-[90vw] h-[90vh] mx-[5vw] my-[5vh]"
             [fullScreen]="true"
           >
             <ng-template pTemplate="header">
@@ -168,8 +168,7 @@
                     label="Buy Ticket"
                     [routerLink]="['/buy-ticket']"
                     [queryParams]="{
-                      movie: movieSchedule.movie.id,
-                      theater: movieSchedule.theater.id
+                      movieSchedule: movieSchedule.id
                     }"
                   />
                 </div>

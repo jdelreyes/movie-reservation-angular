@@ -65,7 +65,7 @@ export class HeaderComponent implements OnInit {
   }
 
   isLoggedIn(): boolean {
-    return this.localStorageService.check();
+    return this.localStorageService.hasSession();
   }
 
   navigateToProfile(): void {
