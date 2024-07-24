@@ -8,15 +8,16 @@ import {
   TheaterDetailsResponse,
 } from '../../interface/dto';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class VisitorService {
-  private movieUri: string = 'http://localhost:8080/api/movies';
+  private movieUri: string = environment.SERVER_URL + '/api/movies';
   private movieScheduleUri: string =
-    'http://localhost:8080/api/movie-schedules';
-  private theaterUri: string = 'http://localhost:8080/api/theaters';
+    environment.SERVER_URL + '/api/movie-schedules';
+  private theaterUri: string = environment.SERVER_URL + '/api/theaters';
 
   constructor(private httpClient: HttpClient) {}
 

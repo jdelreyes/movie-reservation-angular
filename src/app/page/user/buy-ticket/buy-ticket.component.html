@@ -1,1 +1,6 @@
 <p>buy-ticket works!</p>
+@if (elementsOptions.clientSecret) {
+<ngx-stripe-elements [stripe]="stripe" [elementsOptions]="elementsOptions">
+  <ngx-stripe-payment />
+</ngx-stripe-elements>
+}
