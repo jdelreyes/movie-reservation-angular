@@ -1,6 +1,10 @@
-<p>buy-ticket works!</p>
-@if (elementsOptions.clientSecret) {
-<ngx-stripe-elements [stripe]="stripe" [elementsOptions]="elementsOptions">
-  <ngx-stripe-payment />
-</ngx-stripe-elements>
-}
+<section>
+  <div class="max-w-[1300px] m-auto">
+    <p>buy-ticket works!</p>
+    @if (elementsOptions.clientSecret) {
+    <ngx-stripe-elements [stripe]="stripe" [elementsOptions]="elementsOptions">
+      <ngx-stripe-payment />
+    </ngx-stripe-elements>
+    }
+  </div>
+</section>

@@ -13,7 +13,10 @@ export const routes: Route[] = [
   { path: 'login', component: AuthenticateComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'movie/:id/:title', component: MovieDetailsComponent },
-  { path: 'dashboard', component: DashboardComponent },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+  },
   { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
   {
     path: 'buy-ticket',
