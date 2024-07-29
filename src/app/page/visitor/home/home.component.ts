@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { VisitorService } from '../../../service/visitor/visitor.service';
 import { MovieResponse } from '../../../interface/dto';
-import { Base64Pipe } from '../../../pipe/base64.pipe';
 import { LowerCasePipe } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ImageModule } from 'primeng/image';
@@ -16,7 +15,6 @@ import { SpaceToDashPipe } from '../../../pipe';
   selector: 'app-home',
   standalone: true,
   imports: [
-    Base64Pipe,
     LowerCasePipe,
     RouterLink,
     CardModule,

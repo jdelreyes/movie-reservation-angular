@@ -19,6 +19,7 @@ import { LocalStorageService } from '../../../service/local-storage/local-storag
     FontAwesomeModule,
     ToastModule,
   ],
+  // todo: toast not showing up
   providers: [MessageService],
   templateUrl: './header.component.html',
 })
@@ -26,6 +27,7 @@ export class HeaderComponent implements OnInit {
   title: string = 'Movie Reservation App';
   username: string | null = null;
   items: MenuItem[] = [];
+
   faCameraRetro = faCameraRetro;
   faIcons = faIcons;
 

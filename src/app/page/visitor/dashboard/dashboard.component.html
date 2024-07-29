@@ -98,8 +98,8 @@
             headerStyleClass="text-2xl"
             [header]="movieSchedule.movie.title"
           >
-            <div class="flex flex-col md:flex-row w-full text-lg">
-              <div class="p-5">
+            <div class="flex flex-col md:flex-row w-full text-lg gap-5">
+              <div class="basis-5/12">
                 <p-image
                   [src]="
                     movieSchedule.movie.movieImage
@@ -109,12 +109,11 @@
                         movieSchedule.movie.movieImage.data
                       : 'assets/img/placeholder.png'
                   "
-                  class="hover:border-4 rounded-xl border-zinc-900"
+                  imageClass="hover:border-4 rounded-xl border-zinc-900 w-full"
                   alt="{{ movieSchedule.movie.title }} Image"
-                  height="350"
                 />
               </div>
-              <div>
+              <div class="basis-7/12">
                 <p class="text-xl font-extralight opacity-75">
                   {{ movieSchedule.movie.description }}
                 </p>
@@ -128,7 +127,9 @@
                 <div>
                   <i class="pi pi-calendar"></i>
                   <span>
-                    {{ movieSchedule.startDateTime | isodate | datestring }}
+                    {{
+                      movieSchedule.startDateTime | isodate | date : "fullDate"
+                    }}
                   </span>
                 </div>
                 <br />
@@ -136,13 +137,11 @@
                   <i class="pi pi-clock"></i>
                   <span>
                     {{
-                      movieSchedule.startDateTime
-                        | isodate
-                        | datelocaletimestring
+                      movieSchedule.startDateTime | isodate | date : "shortTime"
                     }}
                     -
                     {{
-                      movieSchedule.endDateTime | isodate | datelocaletimestring
+                      movieSchedule.endDateTime | isodate | date : "shortTime"
                     }}</span
                   >
                 </div>
@@ -152,6 +151,13 @@
                   <span>
                     {{ movieSchedule.theater.name }},
                     {{ movieSchedule.theater.location }}
+                  </span>
+                </div>
+                <br />
+                <div>
+                  <i class="pi pi-tag"></i>
+                  <span>
+                    {{ movieSchedule.movieType }}
                   </span>
                 </div>
                 <p-divider />
@@ -168,7 +174,7 @@
                     label="Buy Ticket"
                     [routerLink]="['/buy-ticket']"
                     [queryParams]="{
-                      movieSchedule: movieSchedule.id
+                      'movie-schedule': movieSchedule.id
                     }"
                   />
                 </div>

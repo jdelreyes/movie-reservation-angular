@@ -31,7 +31,11 @@ export class MovieDetailsComponent implements OnInit {
     private activatedRoute: ActivatedRoute
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    await this.getMovie();
+  }
+
+  async getMovie(): Promise<void> {
     this.visitorService.getMovie(this.id).subscribe({
       next: (movie) => {
         this.movie = movie;

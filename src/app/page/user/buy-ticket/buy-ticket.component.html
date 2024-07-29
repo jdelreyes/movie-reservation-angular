@@ -1,10 +1,39 @@
 <section>
   <div class="max-w-[1300px] m-auto">
-    <p>buy-ticket works!</p>
-    @if (elementsOptions.clientSecret) {
-    <ngx-stripe-elements [stripe]="stripe" [elementsOptions]="elementsOptions">
-      <ngx-stripe-payment />
-    </ngx-stripe-elements>
-    }
+    <h1>Checkout</h1>
+    <div class="flex flex-col md:flex-row">
+      <div class="flex flex-col basis-1/2">
+        <div>
+          <p-image
+            [src]="
+              movieSchedule.movie.movieImage
+                ? 'data:' +
+                  movieSchedule.movie.movieImage.type +
+                  ';base64,' +
+                  movieSchedule.movie.movieImage.data
+                : '/assets/img/placeholder.png'
+            "
+            imageClass="w-full"
+            [alt]="movieSchedule.movie.title + 'image'"
+          />
+        </div>
+        <div>
+          {{ movieSchedule.movie.title }}
+        </div>
+      </div>
+      <div class="basis-1/2">
+        <form>
+          <input type="text" pInputText [value]="username" [disabled]="true" />
+        </form>
+        @if (elementsOptions.clientSecret) {
+        <ngx-stripe-elements
+          [stripe]="stripe"
+          [elementsOptions]="elementsOptions"
+        >
+          <ngx-stripe-payment />
+        </ngx-stripe-elements>
+        }
+      </div>
+    </div>
   </div>
 </section>

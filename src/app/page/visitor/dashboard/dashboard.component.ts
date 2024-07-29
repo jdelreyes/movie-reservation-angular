@@ -14,13 +14,12 @@ import { AccordionModule } from 'primeng/accordion';
 import { FormsModule } from '@angular/forms';
 import {
   IsoStringToDateObjectPipe,
-  DateToDateStringPipe,
   UnderscoreToSpacePipe,
-  DateToLocaleTimeStringPipe,
 } from '../../../pipe';
 import { TagModule } from 'primeng/tag';
-import { TitleCasePipe } from '@angular/common';
+import { DatePipe, NgOptimizedImage, TitleCasePipe } from '@angular/common';
 import { DividerModule } from 'primeng/divider';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @Component({
   selector: 'app-dashboard',
@@ -38,12 +37,13 @@ import { DividerModule } from 'primeng/divider';
     AccordionModule,
     FormsModule,
     IsoStringToDateObjectPipe,
-    DateToDateStringPipe,
     UnderscoreToSpacePipe,
-    DateToLocaleTimeStringPipe,
     TagModule,
     TitleCasePipe,
     DividerModule,
+    SkeletonModule,
+    NgOptimizedImage,
+    DatePipe,
   ],
   templateUrl: './dashboard.component.html',
 })
