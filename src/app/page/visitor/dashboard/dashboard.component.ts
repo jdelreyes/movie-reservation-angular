@@ -48,14 +48,15 @@ import { SkeletonModule } from 'primeng/skeleton';
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent implements OnInit {
+  title: string = 'Choose a movie to watch';
   movieId: number | null = null;
   theaterId: number | null = null;
   date: Date | null = null;
 
-  isMovieSidebarVisible = false;
-  isTheaterSidebarVisible = false;
+  isMovieSidebarVisible: boolean = false;
+  isTheaterSidebarVisible: boolean = false;
 
-  isLoading = false;
+  isLoading: boolean = false;
 
   movieLabel: string = 'Any Movie';
   theaterLabel: string = 'Any Theater';

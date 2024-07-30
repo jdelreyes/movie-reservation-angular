@@ -1,31 +1,93 @@
 <section>
-  <div class="max-w-[1300px] m-auto">
-    <h1>Checkout</h1>
-    <div class="flex flex-col md:flex-row">
-      <div class="flex flex-col basis-1/2">
-        <div>
-          <p-image
-            [src]="
-              movieSchedule.movie.movieImage
-                ? 'data:' +
-                  movieSchedule.movie.movieImage.type +
-                  ';base64,' +
-                  movieSchedule.movie.movieImage.data
-                : '/assets/img/placeholder.png'
-            "
-            imageClass="w-full"
-            [alt]="movieSchedule.movie.title + 'image'"
+  <div class="max-w-[1300px] m-auto my-7">
+    <h1 class="text-3xl font-bold">Checkout</h1>
+    <div class="flex flex-col md:flex-row gap-5">
+      <div class="flex flex-row basis-8/12 gap-2">
+        @if (movieSchedule){
+        <div class="flex flex-col md:flex-row w-full text-lg gap-5">
+          <div class="basis-5/12">
+            <p-image
+              [src]="
+                movieSchedule.movie.movieImage
+                  ? 'data:' +
+                    movieSchedule.movie.movieImage.type +
+                    ';base64,' +
+                    movieSchedule.movie.movieImage.data
+                  : 'assets/img/placeholder.png'
+              "
+              imageClass="hover:border-4 rounded-xl border-zinc-900 w-full"
+              alt="{{ movieSchedule.movie.title }} Image"
+            />
+          </div>
+          <div class="basis-7/12">
+            <div>
+              <i class="pi pi-calendar"></i>
+              <span>
+                {{ movieSchedule.startDateTime | isodate | date : "fullDate" }}
+              </span>
+            </div>
+            <br />
+            <div>
+              <i class="pi pi-clock"></i>
+              <span>
+                {{ movieSchedule.startDateTime | isodate | date : "shortTime" }}
+                -
+                {{
+                  movieSchedule.endDateTime | isodate | date : "shortTime"
+                }}</span
+              >
+            </div>
+            <br />
+            <div>
+              <i class="pi pi-map-marker"></i>
+              <span>
+                {{ movieSchedule.theater.name }},
+                {{ movieSchedule.theater.location }}
+              </span>
+            </div>
+            <br />
+            <div>
+              <i class="pi pi-tag"></i>
+              <span>
+                {{ movieSchedule.movieType }}
+              </span>
+            </div>
+            <p-divider />
+            @for (genre of movieSchedule.movie.genres; track $index) {
+            <p-tag
+              styleClass="text-lg py-2 px-3 m-1"
+              severity="info"
+              [rounded]="true"
+              value="{{ genre | underscorespace | titlecase }}"
+            />
+            }
+            <p-divider />
+            <p class="text-xl font-extralight opacity-75">
+              {{ movieSchedule.movie.description }}
+            </p>
+            <div class="text-right">
+              @for (director of movieSchedule.movie.directors; track $index) {
+              <cite class="block">{{ director }}</cite>
+              }
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+      <p-divider class="basis-0" layout="vertical" />
+      <div class="basis-4/12">
+        <div class="flex flex-col gap-2 my-1">
+          <label for="username" class="text-sm font-light">Cardholder</label>
+          <input
+            type="text"
+            id="username"
+            pInputText
+            [value]="username"
+            [disabled]="true"
+            class="shadow-xl border-2"
           />
         </div>
-        <div>
-          {{ movieSchedule.movie.title }}
-        </div>
-      </div>
-      <div class="basis-1/2">
-        <form>
-          <input type="text" pInputText [value]="username" [disabled]="true" />
-        </form>
-        @if (elementsOptions.clientSecret) {
+        @if (elementsOptions && elementsOptions.clientSecret) {
         <ngx-stripe-elements
           [stripe]="stripe"
           [elementsOptions]="elementsOptions"

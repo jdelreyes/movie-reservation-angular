@@ -8,3 +8,4 @@ export * from './theater-details-response.dto';
 export * from './auth-response';
 export * from './payment-intent-response.dto';
 export * from './create-ticket-payment-intent-request.dto';
+export * from './config-response.dto';

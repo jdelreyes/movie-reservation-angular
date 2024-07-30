@@ -1,21 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Appearance, StripeElementsOptions } from '@stripe/stripe-js';
 import {
   injectStripe,
   StripeElementsDirective,
   StripePaymentElementComponent,
-  StripeService,
   StripeServiceInterface,
 } from 'ngx-stripe';
 import { environment } from '../../../../environments/environment';
 import { TimelineModule } from 'primeng/timeline';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { VisitorService } from '../../../service/visitor/visitor.service';
-import { MovieScheduleResponse } from '../../../interface/dto';
+import {
+  ConfigResponse,
+  CreateTicketPaymentIntentRequest,
+  MovieScheduleResponse,
+  PaymentIntentResponse,
+} from '../../../interface/dto';
 import { ImageModule } from 'primeng/image';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { LocalStorageService } from '../../../service/local-storage/local-storage.service';
 import { InputTextModule } from 'primeng/inputtext';
+import { StripeService } from '../../../service/stripe/stripe.service';
+import { DividerModule } from 'primeng/divider';
+import {
+  IsoStringToDateObjectPipe,
+  UnderscoreToSpacePipe,
+} from '../../../pipe';
+import { DatePipe, TitleCasePipe } from '@angular/common';
+import { TagModule } from 'primeng/tag';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-buy-ticket',
@@ -27,47 +40,74 @@ import { InputTextModule } from 'primeng/inputtext';
     ImageModule,
     ReactiveFormsModule,
     InputTextModule,
+    DividerModule,
+    IsoStringToDateObjectPipe,
+    DatePipe,
+    TagModule,
+    ButtonModule,
+    RouterLink,
+    UnderscoreToSpacePipe,
+    TitleCasePipe,
   ],
   templateUrl: './buy-ticket.component.html',
 })
 export class BuyTicketComponent implements OnInit {
-  username = this.localStorageService.getCurrentUsername();
+  @ViewChild(StripeElementsDirective)
+  stripeElementDirective!: StripeElementsDirective;
 
-  private movieScheduleId: number = Number(
-    this.activatedRoute.snapshot.queryParamMap.get('movie-schedule')
-  );
-
+  private movieScheduleId: number;
+  username: string | null = '';
   movieSchedule!: MovieScheduleResponse;
-
+  createTicketPaymentIntentRequest!: CreateTicketPaymentIntentRequest;
   appearance: Appearance = {
-    theme: 'flat',
+    theme: 'night',
   };
-  elementsOptions: StripeElementsOptions = {
-    appearance: this.appearance,
-    mode: 'payment',
-    locale: 'en',
-  };
+  elementsOptions!: StripeElementsOptions;
   stripe: StripeServiceInterface = injectStripe(environment.STRIPE_PUBLIC_KEY);
 
   constructor(
-    private stripeService: StripeService,
     private activatedRoute: ActivatedRoute,
     private visitorService: VisitorService,
-    private localStorageService: LocalStorageService
-  ) {}
-
-  async ngOnInit(): Promise<void> {
-    await this.getMovieSchedule(this.movieScheduleId);
-    this.createPaymentIntent();
-    // todo
-    this.elementsOptions.clientSecret = '';
+    private localStorageService: LocalStorageService,
+    private stripeService: StripeService
+  ) {
+    this.movieScheduleId = Number(
+      this.activatedRoute.snapshot.queryParamMap.get('movie-schedule')
+    );
+    this.username = this.localStorageService.getCurrentUsername();
   }
 
-  async getMovieSchedule(id: number): Promise<void> {
-    this.visitorService.getMovieSchedule(id).subscribe((v) => {
-      this.movieSchedule = v;
+  async ngOnInit() {
+    await this.loadMovieSchedule();
+    await this.createTicketPaymentIntent();
+  }
+
+  private async loadMovieSchedule() {
+    await this.visitorService
+      .getMovieSchedule(this.movieScheduleId)
+      .forEach((movieSchedule: MovieScheduleResponse) => {
+        this.movieSchedule = movieSchedule;
+        this.createTicketPaymentIntentRequest = {
+          movieType: movieSchedule.movieType,
+        };
+      });
+  }
+
+  private async createTicketPaymentIntent() {
+    await this.stripeService
+      .createTicketPaymentIntent(this.createTicketPaymentIntentRequest)
+      .forEach((paymentIntent: PaymentIntentResponse) => {
+        this.elementsOptions = {
+          clientSecret: paymentIntent.clientSecret,
+          locale: 'en-CA',
+          appearance: this.appearance,
+        };
+      });
+  }
+
+  private async initializeStripe() {
+    await this.stripeService.getConfig().forEach((config: ConfigResponse) => {
+      this.stripe = injectStripe(config.publishableKey);
     });
   }
-
-  private createPaymentIntent(): void {}
 }

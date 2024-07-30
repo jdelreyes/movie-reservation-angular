@@ -5,7 +5,7 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { MenuItem, MessageService } from 'primeng/api';
 import { AuthService } from '../../../service/auth/auth.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faCameraRetro, faIcons } from '@fortawesome/free-solid-svg-icons';
+import { faHurricane, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { ToastModule } from 'primeng/toast';
 import { LocalStorageService } from '../../../service/local-storage/local-storage.service';
 
@@ -28,8 +28,7 @@ export class HeaderComponent implements OnInit {
   username: string | null = null;
   items: MenuItem[] = [];
 
-  faCameraRetro = faCameraRetro;
-  faIcons = faIcons;
+  logo: IconDefinition = faHurricane;
 
   constructor(
     private router: Router,

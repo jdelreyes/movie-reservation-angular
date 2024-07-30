@@ -31,11 +31,11 @@ export class MovieDetailsComponent implements OnInit {
     private activatedRoute: ActivatedRoute
   ) {}
 
-  async ngOnInit(): Promise<void> {
-    await this.getMovie();
+  ngOnInit(): void {
+    this.getMovie();
   }
 
-  async getMovie(): Promise<void> {
+  getMovie(): void {
     this.visitorService.getMovie(this.id).subscribe({
       next: (movie) => {
         this.movie = movie;
