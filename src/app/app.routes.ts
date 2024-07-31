@@ -7,12 +7,14 @@ import { DashboardComponent } from './page/visitor/dashboard/dashboard.component
 import { ProfileComponent } from './page/user/profile/profile.component';
 import { authGuard } from './guard/auth.guard';
 import { BuyTicketComponent } from './page/user/buy-ticket/buy-ticket.component';
+import { NotFoundComponent } from './page/shared/not-found/not-found.component';
 
 export const routes: Route[] = [
   { path: '', component: HomeComponent },
   { path: 'login', component: AuthenticateComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'movie/:id/:title', component: MovieDetailsComponent },
+  { path: 'not-found', component: NotFoundComponent },
   {
     path: 'dashboard',
     component: DashboardComponent,
@@ -23,5 +25,5 @@ export const routes: Route[] = [
     component: BuyTicketComponent,
     canActivate: [authGuard],
   },
-  { path: '**', component: HomeComponent },
+  { path: '**', component: NotFoundComponent },
 ];

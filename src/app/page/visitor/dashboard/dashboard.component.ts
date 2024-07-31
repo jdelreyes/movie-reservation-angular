@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MovieScheduleResponse } from '../../../interface/dto';
-import { VisitorService } from '../../../service/visitor/visitor.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CalendarModule } from 'primeng/calendar';
 import { InputTextModule } from 'primeng/inputtext';
@@ -20,6 +19,9 @@ import { TagModule } from 'primeng/tag';
 import { DatePipe, NgOptimizedImage, TitleCasePipe } from '@angular/common';
 import { DividerModule } from 'primeng/divider';
 import { SkeletonModule } from 'primeng/skeleton';
+import { MovieScheduleService } from '../../../service/movie-schedule/movie-schedule.service';
+import { MovieService } from '../../../service/movie/movie.service';
+import { TheaterService } from '../../../service/theater/theater.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -67,7 +69,9 @@ export class DashboardComponent implements OnInit {
   maxDate: Date = new Date(new Date().setDate(new Date().getDate() + 7));
 
   constructor(
-    private visitorService: VisitorService,
+    private movieScheduleService: MovieScheduleService,
+    private movieService: MovieService,
+    private theaterService: TheaterService,
     private activatedRoute: ActivatedRoute,
     private router: Router
   ) {}
@@ -136,7 +140,7 @@ export class DashboardComponent implements OnInit {
   }
 
   private getMovieSchedules() {
-    this.visitorService
+    this.movieScheduleService
       .getMovieSchedules(
         this.theaterId,
         this.movieId,
@@ -150,7 +154,7 @@ export class DashboardComponent implements OnInit {
   }
 
   private populateMovieLabel(id: number) {
-    this.visitorService.getMovie(id).subscribe({
+    this.movieService.getMovie(id).subscribe({
       next: (v) => {
         this.movieLabel = v.title;
       },
@@ -158,7 +162,7 @@ export class DashboardComponent implements OnInit {
   }
 
   private populateTheaterLabel(id: number) {
-    this.visitorService.getTheater(id).subscribe({
+    this.theaterService.getTheater(id).subscribe({
       next: (v) => {
         this.theaterLabel = v.name;
       },

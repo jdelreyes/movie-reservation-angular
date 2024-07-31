@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { VisitorService } from '../../../service/visitor/visitor.service';
 import { MovieResponse } from '../../../interface/dto';
 import { LowerCasePipe } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -10,6 +9,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { PageEvent } from '../../../interface/event';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { SpaceToDashPipe } from '../../../pipe';
+import { MovieService } from '../../../service/movie/movie.service';
 
 @Component({
   selector: 'app-home',
@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   unsubscribe$: Subject<unknown> = new Subject();
 
   constructor(
-    private visitorService: VisitorService,
+    private movieService: MovieService,
     private router: Router,
     private activateRoute: ActivatedRoute
   ) {}
@@ -72,7 +72,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private getAvailableMovies(): void {
-    this.visitorService
+    this.movieService
       .getAvailableMovies(this.page, this.size)
       .pipe(
         tap({

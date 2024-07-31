@@ -1,4 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ɵsetCurrentInjector,
+} from '@angular/core';
 import { Appearance, StripeElementsOptions } from '@stripe/stripe-js';
 import {
   injectStripe,
@@ -9,7 +14,6 @@ import {
 import { environment } from '../../../../environments/environment';
 import { TimelineModule } from 'primeng/timeline';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { VisitorService } from '../../../service/visitor/visitor.service';
 import {
   ConfigResponse,
   CreateTicketPaymentIntentRequest,
@@ -26,9 +30,10 @@ import {
   IsoStringToDateObjectPipe,
   UnderscoreToSpacePipe,
 } from '../../../pipe';
-import { DatePipe, TitleCasePipe } from '@angular/common';
+import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
+import { MovieScheduleService } from '../../../service/movie-schedule/movie-schedule.service';
 
 @Component({
   selector: 'app-buy-ticket',
@@ -48,6 +53,7 @@ import { ButtonModule } from 'primeng/button';
     RouterLink,
     UnderscoreToSpacePipe,
     TitleCasePipe,
+    CurrencyPipe,
   ],
   templateUrl: './buy-ticket.component.html',
 })
@@ -64,10 +70,11 @@ export class BuyTicketComponent implements OnInit {
   };
   elementsOptions!: StripeElementsOptions;
   stripe: StripeServiceInterface = injectStripe(environment.STRIPE_PUBLIC_KEY);
+  amount!: number;
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private visitorService: VisitorService,
+    private movieScheduleService: MovieScheduleService,
     private localStorageService: LocalStorageService,
     private stripeService: StripeService
   ) {
@@ -83,7 +90,7 @@ export class BuyTicketComponent implements OnInit {
   }
 
   private async loadMovieSchedule() {
-    await this.visitorService
+    await this.movieScheduleService
       .getMovieSchedule(this.movieScheduleId)
       .forEach((movieSchedule: MovieScheduleResponse) => {
         this.movieSchedule = movieSchedule;
@@ -97,6 +104,8 @@ export class BuyTicketComponent implements OnInit {
     await this.stripeService
       .createTicketPaymentIntent(this.createTicketPaymentIntentRequest)
       .forEach((paymentIntent: PaymentIntentResponse) => {
+        this.amount = paymentIntent.amount;
+
         this.elementsOptions = {
           clientSecret: paymentIntent.clientSecret,
           locale: 'en-CA',

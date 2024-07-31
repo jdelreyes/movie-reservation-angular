@@ -49,7 +49,9 @@
             <div>
               <i class="pi pi-tag"></i>
               <span>
-                {{ movieSchedule.movieType }}
+                @if (amount) {
+                {{ amount / 100 | currency }}
+                } ({{ movieSchedule.movieType }})
               </span>
             </div>
             <p-divider />

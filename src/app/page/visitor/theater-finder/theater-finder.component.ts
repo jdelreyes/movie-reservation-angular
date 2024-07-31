@@ -1,6 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { TheaterResponse } from '../../../interface/dto';
-import { VisitorService } from '../../../service/visitor/visitor.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -9,6 +8,7 @@ import { ButtonModule } from 'primeng/button';
 import { AutoFocusModule } from 'primeng/autofocus';
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
+import { TheaterService } from '../../../service/theater/theater.service';
 
 @Component({
   selector: 'app-theater-finder',
@@ -32,7 +32,7 @@ export class TheaterFinderComponent implements OnInit {
   isTheaterChosenEvent = new EventEmitter<boolean>(false);
 
   constructor(
-    private visitorService: VisitorService,
+    private theaterService: TheaterService,
     private activatedRoute: ActivatedRoute,
     private router: Router
   ) {}
@@ -58,9 +58,9 @@ export class TheaterFinderComponent implements OnInit {
   }
 
   private getTheaters(name: string) {
-    this.visitorService.getTheatersByNameContaining(name).subscribe({
-      next: (v) => {
-        this.theaters = v;
+    this.theaterService.getTheatersByNameContaining(name).subscribe({
+      next: (theaters: TheaterResponse[]) => {
+        this.theaters = theaters;
       },
     });
   }

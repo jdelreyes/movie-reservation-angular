@@ -33,9 +33,7 @@ import { LocalStorageService } from '../../../service/local-storage/local-storag
   templateUrl: './authenticate.component.html',
 })
 export class AuthenticateComponent implements OnInit {
-  private redirect: string | null =
-    this.activatedRoute.snapshot.queryParamMap.get('redirect');
-
+  private redirect!: string | null;
   title: string = 'Authenticate';
 
   formGroup!: FormGroup;
@@ -51,6 +49,8 @@ export class AuthenticateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.redirect = this.activatedRoute.snapshot.queryParamMap.get('redirect');
+
     this.formGroup = new FormGroup({
       username: new FormControl('', [
         Validators.required,
