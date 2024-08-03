@@ -76,8 +76,12 @@ export class AuthenticateComponent implements OnInit {
         next: (v) => {
           this.localStorageService.setAuthResponse(v);
 
-          if (this.redirect) this.router.navigate(['/' + this.redirect]);
-          else this.router.navigateByUrl('/');
+          if (this.redirect) {
+            const decodedRedirectUrl = decodeURIComponent(this.redirect);
+            this.router.navigateByUrl(decodedRedirectUrl);
+          } else {
+            this.router.navigateByUrl('/');
+          }
         },
         error: (e) => {
           const NOT_FOUND_STATUS_CODE: number = 404;

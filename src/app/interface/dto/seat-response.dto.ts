@@ -1,4 +1,4 @@
-export interface SeatResponseDto {
+export interface SeatResponse {
   id: number;
   rowLetter: string;
   seatNumber: number;

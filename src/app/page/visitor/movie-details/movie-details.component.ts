@@ -7,6 +7,7 @@ import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { UnderscoreToSpacePipe } from '../../../pipe/underscore-space.pipe';
 import { MovieService } from '../../../service/movie/movie.service';
+import { LocalStorageService } from '../../../service/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-movie-details',

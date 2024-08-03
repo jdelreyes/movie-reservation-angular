@@ -171,13 +171,22 @@
                 />
                 }
                 <div class="flex flex-row justify-end">
+                  @if (isLoggedIn) {
                   <p-button
                     label="Buy Ticket"
                     [routerLink]="['/buy-ticket']"
                     [queryParams]="{
                       'movie-schedule': movieSchedule.id
                     }"
+                  />} @else {
+                  <p-button
+                    label="Login to Buy Ticket"
+                    [routerLink]="['/login']"
+                    [queryParams]="{
+                      redirect: getBuyTicketRedirectUrl(movieSchedule.id)
+                    }"
                   />
+                  }
                 </div>
               </div>
             </div>

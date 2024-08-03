@@ -5,9 +5,10 @@ import { HomeComponent } from './page/visitor/home/home.component';
 import { MovieDetailsComponent } from './page/visitor/movie-details/movie-details.component';
 import { DashboardComponent } from './page/visitor/dashboard/dashboard.component';
 import { ProfileComponent } from './page/user/profile/profile.component';
-import { authGuard } from './guard/auth.guard';
 import { BuyTicketComponent } from './page/user/buy-ticket/buy-ticket.component';
 import { NotFoundComponent } from './page/shared/not-found/not-found.component';
+import { ReceiptComponent } from './page/user/receipt/receipt.component';
+import { authGuard, notFoundGuard } from './guard';
 
 export const routes: Route[] = [
   { path: '', component: HomeComponent },
@@ -24,6 +25,11 @@ export const routes: Route[] = [
     path: 'buy-ticket',
     component: BuyTicketComponent,
     canActivate: [authGuard],
+  },
+  {
+    path: 'receipt/:id',
+    component: ReceiptComponent,
+    canActivate: [notFoundGuard],
   },
   { path: '**', component: NotFoundComponent },
 ];

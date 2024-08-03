@@ -9,3 +9,4 @@ export * from './auth-response';
 export * from './payment-intent-response.dto';
 export * from './create-ticket-payment-intent-request.dto';
 export * from './config-response.dto';
+export * from './payment-intent-request.dto';

@@ -7,18 +7,13 @@ import {
 } from '../../interface/dto';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
-import { StripeService as NgxStripeService } from 'ngx-stripe';
-
 @Injectable({
   providedIn: 'root',
 })
 export class StripeService {
   private stripeUri: string = environment.SERVER_URL + '/api/stripe';
 
-  constructor(
-    private httpClient: HttpClient,
-    private ngxStripeService: NgxStripeService
-  ) {}
+  constructor(private httpClient: HttpClient) {}
 
   createTicketPaymentIntent(
     createTicketPaymentIntentRequest: CreateTicketPaymentIntentRequest

@@ -22,6 +22,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { MovieScheduleService } from '../../../service/movie-schedule/movie-schedule.service';
 import { MovieService } from '../../../service/movie/movie.service';
 import { TheaterService } from '../../../service/theater/theater.service';
+import { LocalStorageService } from '../../../service/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -57,6 +58,7 @@ export class DashboardComponent implements OnInit {
 
   isMovieSidebarVisible: boolean = false;
   isTheaterSidebarVisible: boolean = false;
+  isLoggedIn!: boolean;
 
   isLoading: boolean = false;
 
@@ -73,10 +75,13 @@ export class DashboardComponent implements OnInit {
     private movieService: MovieService,
     private theaterService: TheaterService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private localStorageService: LocalStorageService
   ) {}
 
   ngOnInit(): void {
+    this.isLoggedIn = this.localStorageService.hasSession();
+
     this.activatedRoute.queryParams.subscribe((params) => {
       this.movieId = params['movie'] ? Number(params['movie']) : null;
       this.theaterId = params['theater'] ? Number(params['theater']) : null;
@@ -137,6 +142,10 @@ export class DashboardComponent implements OnInit {
       queryParams: { date: this.date.toISOString() },
       queryParamsHandling: 'merge',
     });
+  }
+
+  getBuyTicketRedirectUrl(movieScheduleId: number): string {
+    return encodeURIComponent('buy-ticket?movie-schedule=' + movieScheduleId);
   }
 
   private getMovieSchedules() {

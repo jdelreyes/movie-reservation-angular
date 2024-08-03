@@ -50,9 +50,17 @@
               <i class="pi pi-tag"></i>
               <span>
                 @if (amount) {
-                {{ amount / 100 | currency }}
+                {{ amount | currency : "CAD" }}
                 } ({{ movieSchedule.movieType }})
               </span>
+            </div>
+            <br />
+            <div>
+              <fa-icon [icon]="faCouch" />
+              <!-- todo: replace with real seat -->
+              <span
+                >&nbsp;@if (seat){{{seat.rowLetter + seat.seatNumber}}}</span
+              >
             </div>
             <p-divider />
             @for (genre of movieSchedule.movie.genres; track $index) {
@@ -79,7 +87,7 @@
       <p-divider class="basis-0" layout="vertical" />
       <div class="basis-4/12">
         <div class="flex flex-col gap-2 my-1">
-          <label for="username" class="text-sm font-light">Cardholder</label>
+          <label for="username" class="text-sm font-light">Account Name</label>
           <input
             type="text"
             id="username"
@@ -96,6 +104,11 @@
         >
           <ngx-stripe-payment />
         </ngx-stripe-elements>
+        <p-button
+          label="Pay {{ amount | currency : 'CAD' }}"
+          styleClass="w-full mt-10"
+          (onClick)="pay()"
+        />
         }
       </div>
     </div>

@@ -1,10 +1,9 @@
+import { Component, OnInit, signal, ViewChild } from '@angular/core';
 import {
-  Component,
-  OnInit,
-  ViewChild,
-  ɵsetCurrentInjector,
-} from '@angular/core';
-import { Appearance, StripeElementsOptions } from '@stripe/stripe-js';
+  Appearance,
+  PaymentIntentResult,
+  StripeElementsOptions,
+} from '@stripe/stripe-js';
 import {
   injectStripe,
   StripeElementsDirective,
@@ -13,15 +12,16 @@ import {
 } from 'ngx-stripe';
 import { environment } from '../../../../environments/environment';
 import { TimelineModule } from 'primeng/timeline';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
   ConfigResponse,
   CreateTicketPaymentIntentRequest,
   MovieScheduleResponse,
+  PaymentIntentRequest,
   PaymentIntentResponse,
+  SeatResponse,
 } from '../../../interface/dto';
 import { ImageModule } from 'primeng/image';
-import { ReactiveFormsModule } from '@angular/forms';
 import { LocalStorageService } from '../../../service/local-storage/local-storage.service';
 import { InputTextModule } from 'primeng/inputtext';
 import { StripeService } from '../../../service/stripe/stripe.service';
@@ -34,6 +34,8 @@ import { CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { MovieScheduleService } from '../../../service/movie-schedule/movie-schedule.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faCouch } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-buy-ticket',
@@ -43,7 +45,6 @@ import { MovieScheduleService } from '../../../service/movie-schedule/movie-sche
     StripePaymentElementComponent,
     TimelineModule,
     ImageModule,
-    ReactiveFormsModule,
     InputTextModule,
     DividerModule,
     IsoStringToDateObjectPipe,
@@ -54,14 +55,14 @@ import { MovieScheduleService } from '../../../service/movie-schedule/movie-sche
     UnderscoreToSpacePipe,
     TitleCasePipe,
     CurrencyPipe,
+    FontAwesomeModule,
   ],
   templateUrl: './buy-ticket.component.html',
 })
 export class BuyTicketComponent implements OnInit {
-  @ViewChild(StripeElementsDirective)
-  stripeElementDirective!: StripeElementsDirective;
-
   private movieScheduleId: number;
+  @ViewChild(StripePaymentElementComponent)
+  paymentElement!: StripePaymentElementComponent;
   username: string | null = '';
   movieSchedule!: MovieScheduleResponse;
   createTicketPaymentIntentRequest!: CreateTicketPaymentIntentRequest;
@@ -71,17 +72,54 @@ export class BuyTicketComponent implements OnInit {
   elementsOptions!: StripeElementsOptions;
   stripe: StripeServiceInterface = injectStripe(environment.STRIPE_PUBLIC_KEY);
   amount!: number;
+  paying = signal(false);
+  faCouch = faCouch;
+  seat!: SeatResponse;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private movieScheduleService: MovieScheduleService,
     private localStorageService: LocalStorageService,
-    private stripeService: StripeService
+    private stripeService: StripeService,
+    private router: Router
   ) {
     this.movieScheduleId = Number(
       this.activatedRoute.snapshot.queryParamMap.get('movie-schedule')
     );
     this.username = this.localStorageService.getCurrentUsername();
+  }
+
+  pay() {
+    this.stripe
+      .confirmPayment({
+        elements: this.paymentElement.elements,
+        confirmParams: {
+          payment_method_data: {
+            billing_details: { name: this.username },
+          },
+        },
+        redirect: 'if_required',
+      })
+      // todo: need more logic
+      .subscribe((paymentIntentResult: PaymentIntentResult) => {
+        console.log(paymentIntentResult);
+
+        if (paymentIntentResult.error) {
+          console.error(paymentIntentResult.error.message);
+        } else {
+          if (paymentIntentResult.paymentIntent.status === 'succeeded') {
+            const paymentIntentRequest: PaymentIntentRequest = {
+              id: paymentIntentResult.paymentIntent.id,
+              amount: paymentIntentResult.paymentIntent.amount,
+              currency: paymentIntentResult.paymentIntent.currency,
+              status: paymentIntentResult.paymentIntent.status,
+            };
+
+            // todo: put some id before '/receipt'. `/receipt/:id`
+            this.router.navigate([`/receipt/${paymentIntentRequest.id}`]);
+          }
+        }
+      });
   }
 
   async ngOnInit() {
@@ -94,9 +132,12 @@ export class BuyTicketComponent implements OnInit {
       .getMovieSchedule(this.movieScheduleId)
       .forEach((movieSchedule: MovieScheduleResponse) => {
         this.movieSchedule = movieSchedule;
+        // todo
         this.createTicketPaymentIntentRequest = {
           movieType: movieSchedule.movieType,
+          seatId: 1,
         };
+        this.seat = { id: 1, seatNumber: 1, rowLetter: 'A', isReserved: false };
       });
   }
 
@@ -114,6 +155,7 @@ export class BuyTicketComponent implements OnInit {
       });
   }
 
+  // to dynamically fetch stripe publishable key from the server
   private async initializeStripe() {
     await this.stripeService.getConfig().forEach((config: ConfigResponse) => {
       this.stripe = injectStripe(config.publishableKey);
